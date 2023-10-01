@@ -1,6 +1,6 @@
 # TmdbMovieApp
 ## Tmdb API를 활용한 영화 검색 사이트
----
+
 엔티티 만들고 시큐리티 jwt 토큰 구현했다 회원가입과 로그인까지 확인했다
 
 jwt AccessToken 과 RefreshToken으로 토큰 2개를 쿠키에 담아서 https secure했다
