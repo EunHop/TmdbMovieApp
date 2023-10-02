@@ -1,12 +1,10 @@
 package com.eunhop.tmdbmovieapp.jwt;
 
+import com.eunhop.tmdbmovieapp.domain.JwtToken;
+import com.eunhop.tmdbmovieapp.domain.Roles;
 import com.eunhop.tmdbmovieapp.domain.User;
-import com.eunhop.tmdbmovieapp.repository.JwtTokenRepository;
 import com.eunhop.tmdbmovieapp.repository.UserRepository;
 import com.eunhop.tmdbmovieapp.service.JwtTokenService;
-import com.eunhop.tmdbmovieapp.service.UserService;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -15,11 +13,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -42,56 +42,50 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
       HttpServletResponse response,
       FilterChain chain
   ) throws IOException, ServletException {
-    String accessToken = null;
-    String refreshToken = null;
-    String userEmail = null;
-    try {
       // cookie 에서 JWT token을 가져옵니다.
-      accessToken = Arrays.stream(request.getCookies())
+    String jwtAccessToken = null;
+    String jwtRefreshToken = null;
+    try {
+      jwtAccessToken = Arrays.stream(request.getCookies())
           .filter(cookie -> cookie.getName().equals(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription())).findFirst()
           .map(Cookie::getValue)
           .orElse(null);
-      refreshToken = Arrays.stream(request.getCookies())
+      jwtRefreshToken = Arrays.stream(request.getCookies())
           .filter(cookie -> cookie.getName().equals(JwtProperties.REFRESH_TOKEN_COOKIE_NAME.getDescription())).findFirst()
           .map(Cookie::getValue)
           .orElse(null);
-    } catch (Exception ignored) {
-    }
-    if (accessToken != null & refreshToken != null) {
-      if (refreshToken.equals(jwtTokenService.findByAccessToken(accessToken).getRefreshToken())) {
-        Authentication authentication = getUsernamePasswordAuthenticationToken(accessToken, refreshToken);
+    } catch (Exception ignored) {}
+    if (jwtAccessToken != null & jwtRefreshToken != null) {
+      if (jwtRefreshToken.equals(jwtTokenService.findByAccessToken(jwtAccessToken).getRefreshToken())) {
+        Authentication authentication = getUsernamePasswordAuthenticationToken(jwtAccessToken, jwtRefreshToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
-    } else if (accessToken == null & refreshToken != null) {
-      if (JwtUtils.accessTokenNotExpired(jwtTokenService.findByRefreshToken(refreshToken).getAccessToken())) {
-        jwtTokenService.deleteToken(refreshToken);
-        Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription(), null);
-        cookie1.setMaxAge(0);
-        Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN_COOKIE_NAME.getDescription(), null);
-        cookie2.setMaxAge(0);
-        response.addCookie(cookie1);
-        response.addCookie(cookie2);
-
-      } else {
-        String newAccessToken = JwtUtils.createAccessToken(jwtTokenService.findByRefreshToken(refreshToken).getUser());
-        jwtTokenService.updateNewAccessToken(newAccessToken, refreshToken);
-        Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription(), newAccessToken);
-        cookie1.setMaxAge(Integer.parseInt(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription())); // 쿠키의 만료시간 설정
-        cookie1.setSecure(true);
-        cookie1.setHttpOnly(true);
-        cookie1.setPath("/");
-        response.addCookie(cookie1);
-        Authentication authentication = getUsernamePasswordAuthenticationToken(accessToken, newAccessToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    } else if (jwtAccessToken == null & jwtRefreshToken != null) {
+      Optional<JwtToken> refresh = jwtTokenService.findByRefreshToken(jwtRefreshToken);
+      if(refresh.isPresent()) {
+        if (JwtUtils.accessTokenNotExpired(refresh.get().getAccessToken())) {
+          jwtTokenService.deleteByRefreshToken(jwtRefreshToken);
+          cookieDelete(response);
+        }
+        else {
+          String newJwtAccessToken = JwtUtils.createAccessToken(refresh.get().getUser().getEmail());
+          jwtTokenService.updateNewAccessToken(newJwtAccessToken, jwtRefreshToken);
+          Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription(), newJwtAccessToken);
+          cookie1.setMaxAge(Integer.parseInt(JwtProperties.ACCESS_EXPIRATION_TIME.getDescription())); // 쿠키의 만료시간 설정
+          cookie1.setSecure(true);
+          cookie1.setHttpOnly(true);
+          cookie1.setPath("/");
+          response.addCookie(cookie1);
+          Authentication authentication = getUsernamePasswordAuthenticationToken(newJwtAccessToken, jwtRefreshToken);
+          SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
       }
     }
-    jwtTokenService.deleteToken(refreshToken);
-    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription(), null);
-    cookie1.setMaxAge(0);
-    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN_COOKIE_NAME.getDescription(), null);
-    cookie2.setMaxAge(0);
-    response.addCookie(cookie1);
-    response.addCookie(cookie2);
+    // jwtAccessToken != null & jwtRefreshToken == null
+    else if (jwtAccessToken != null) {
+      jwtTokenService.deleteByAccessToken(jwtAccessToken);
+      cookieDelete(response);
+    }
     chain.doFilter(request, response);
   }
 
@@ -106,11 +100,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
       Optional<User> user = userRepository.findByEmail(email1); // 유저를 이메일로 찾습니다.
       if(user.isPresent()) {
         return new UsernamePasswordAuthenticationToken(
-            user.get(), // principal
+            user.get().getEmail(), // principal
             user.get().getPassword(),
-            user.get().getAuthorities());
+            List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
+        );
       }
     }
     return null; // 유저가 없으면 NULL
+  }
+
+  private void cookieDelete(HttpServletResponse response) {
+    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription(), null);
+    cookie1.setMaxAge(0);
+    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN_COOKIE_NAME.getDescription(), null);
+    cookie2.setMaxAge(0);
+    response.addCookie(cookie1);
+    response.addCookie(cookie2);
   }
 }

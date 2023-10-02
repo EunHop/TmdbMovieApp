@@ -1,6 +1,7 @@
 package com.eunhop.tmdbmovieapp.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -9,24 +10,21 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@Table(name = "jwt_token")
+@Table(name = "oauth2")
 @Entity
-public class JwtToken extends BaseEntity{
-
+public class OAuth2 extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String accessToken;
+  @NotNull
+  private String email;
 
-  private String refreshToken;
+  @NotNull
+  private String name;
 
-  @OneToOne
-  @JoinColumn(name = "user_id")
+  private String provider;
+
+  @ManyToOne
   private User user;
-
-  public JwtToken(String accessToken, String refreshToken) {
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;;
-  }
 }

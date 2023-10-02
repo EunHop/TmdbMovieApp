@@ -1,36 +1,38 @@
 package com.eunhop.tmdbmovieapp.jwt;
 
-import com.eunhop.tmdbmovieapp.domain.JwtToken;
-import com.eunhop.tmdbmovieapp.domain.User;
-import com.eunhop.tmdbmovieapp.repository.JwtTokenRepository;
+import com.eunhop.tmdbmovieapp.domain.Roles;
+import com.eunhop.tmdbmovieapp.dto.security.PrincipalUser;
+import com.eunhop.tmdbmovieapp.service.CreateCookie;
 import com.eunhop.tmdbmovieapp.service.JwtTokenService;
-import com.eunhop.tmdbmovieapp.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * JWT를 이용한 로그인 인증
  */
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
   private final AuthenticationManager authenticationManager;
-  private final JwtTokenService jwtTokenService;
+  private final CreateCookie createCookie;
 
-  public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenService jwtTokenService) {
+  public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CreateCookie createCookie) {
     super(authenticationManager);
     this.authenticationManager = authenticationManager;
-    this.jwtTokenService = jwtTokenService;
+    this.createCookie = createCookie;
   }
 
   /**
@@ -44,10 +46,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
         request.getParameter("email"),
         request.getParameter("password"),
-        new ArrayList<>()
+        List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
     );
     return authenticationManager.authenticate(authenticationToken);
   }
+
 
   /**
    * 인증에 성공했을 때 사용
@@ -59,23 +62,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       FilterChain chain,
       Authentication authResult
   ) throws IOException {
-    User user = (User) authResult.getPrincipal();
-    String accessToken = JwtUtils.createAccessToken(user);
-    String refreshToken = JwtUtils.createRefreshToken(user);
-    jwtTokenService.newToken(accessToken, refreshToken, user.getEmail());
-    // 쿠키 생성
-    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription(), accessToken);
-    cookie1.setMaxAge(Integer.parseInt(JwtProperties.ACCESS_EXPIRATION_TIME.getDescription())); // 쿠키의 만료시간 설정
-    cookie1.setSecure(true);
-    cookie1.setHttpOnly(true);
-    cookie1.setPath("/");
-    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN_COOKIE_NAME.getDescription(), refreshToken);
-    cookie2.setMaxAge(Integer.parseInt(JwtProperties.REFRESH_EXPIRATION_TIME.getDescription())); // 쿠키의 만료시간 설정
-    cookie2.setSecure(true);
-    cookie2.setHttpOnly(true);
-    cookie2.setPath("/");
-    response.addCookie(cookie1);
-    response.addCookie(cookie2);
+    createCookie.createCookieUsingAuthentication(response, authResult);
+
     response.sendRedirect("/");
   }
 
@@ -86,6 +74,5 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   ) throws IOException {
     response.sendRedirect("/login");
   }
-
 
 }

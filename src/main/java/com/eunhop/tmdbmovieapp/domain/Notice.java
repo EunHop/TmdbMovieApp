@@ -1,15 +1,16 @@
 package com.eunhop.tmdbmovieapp.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
-@Data
+@Getter
+@Setter
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Table(name = "notice")
 @Entity
 public class Notice extends BaseEntity {
@@ -19,6 +20,10 @@ public class Notice extends BaseEntity {
 
   @Column(length = 500)
   private String content;
+
+  private String createBy;
+
+  private String modifiedBy;
 
 
   // 유저 권한(Admin)에 따라 공지사항 쓰기, 삭제, 수정이 가능하다. 그럼 Admin일때만 뷰 단에서 처리하면 되지 굳이 관계를 지정해 주어야 하나 싶었지만,

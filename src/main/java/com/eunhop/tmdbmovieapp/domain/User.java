@@ -3,21 +3,20 @@ package com.eunhop.tmdbmovieapp.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Table(name = "user")
 @Entity
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -31,62 +30,20 @@ public class User extends BaseEntity implements UserDetails {
   private String password;
 
   @NotNull
-  private String nickname;
+  private String name;
 
   @Enumerated(EnumType.STRING) @NotNull
   private Roles role;
 
   private boolean enabled;
 
-
   @OneToMany
   @JoinColumn(name = "user_id")
   @ToString.Exclude
   private List<UserAndMovie> userAndMovies = new ArrayList<>();
 
-  public User(String email, String password, String nickname, Roles role, boolean enabled) {
-    this.email = email;
-    this.password = password;
-    this.nickname = nickname;
-    this.role = role;
-    this.enabled = enabled;
-  }
-
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    Collection<GrantedAuthority> authorities = new ArrayList<>();
-      authorities.add(new SimpleGrantedAuthority(role.getValue()));
-    return authorities;
-  }
-
-
-  @Override
-  public String getPassword() {
-    return password;
-  }
-
-  @Override
-  public String getUsername() {
-    return email;
-  }
-
-  @Override
-  public boolean isAccountNonExpired() {
-    return enabled;
-  }
-
-  @Override
-  public boolean isAccountNonLocked() {
-    return enabled;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return enabled;
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return enabled;
-  }
+  @OneToMany
+  @JoinColumn(name = "user_id")
+  @ToString.Exclude
+  private List<OAuth2> userByOAuth2 = new ArrayList<>();
 }

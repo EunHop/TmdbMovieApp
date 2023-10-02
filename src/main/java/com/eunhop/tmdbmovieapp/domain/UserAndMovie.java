@@ -1,13 +1,14 @@
 package com.eunhop.tmdbmovieapp.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Table(name = "user_and_movie")
 @Entity
 public class UserAndMovie extends BaseEntity {

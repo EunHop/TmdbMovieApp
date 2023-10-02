@@ -1,3 +1,8 @@
+body {
+    height: 100vh;
+    /* vh단위는 뷰포트 세로 너비의 백분율 창을 줄여도 높이 그대로 */
+}
+
 .form-signin {
     max-width: 330px;
     padding: 15px;
@@ -29,4 +34,22 @@
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+.google-img {
+    width: 300px;
+    height: 50px;
+   margin: 5px 0 5px 0;
+}
+
+.naver-img {
+    width: 300px;
+    height: 50px;
+    margin-bottom: 5px;
+}
+
+.kakao-img {
+    width: 300px;
+    height: 50px;
+    margin-bottom: 5px;
 }

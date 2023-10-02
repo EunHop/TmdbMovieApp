@@ -17,9 +17,9 @@ public class JwtTokenService {
   private final JwtTokenRepository jwtTokenRepository;
   private final UserRepository userRepository;
 
-  public void newToken(String accessToken,String refreshToken, String Email) {
-    JwtToken jwtToken = new JwtToken(accessToken, refreshToken);
-    Optional<User> user = userRepository.findByEmail(Email);
+  public void newToken(String accessToken,String refreshToken, String email) {
+    JwtToken jwtToken = JwtToken.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+    Optional<User> user = userRepository.findByEmail(email);
     if(user.isPresent()) {
       jwtToken.setUser(user.get());
       jwtTokenRepository.save(jwtToken);
@@ -30,22 +30,47 @@ public class JwtTokenService {
     return jwtTokenRepository.findByAccessToken(accessToken);
   }
 
-  public JwtToken findByRefreshToken(String refreshToken) {
+  public Optional<JwtToken> findByRefreshToken(String refreshToken) {
     return jwtTokenRepository.findByRefreshToken(refreshToken);
   }
 
-  public void deleteToken(String refreshToken) {
-    JwtToken jwtToken = jwtTokenRepository.findByRefreshToken(refreshToken);
+  public void deleteByRefreshToken(String refreshToken) {
+    Optional<JwtToken> jwtToken = jwtTokenRepository.findByRefreshToken(refreshToken);
+    if(jwtToken.isPresent()) {
+      jwtTokenRepository.delete(jwtToken.get());
+    }
+  }
+
+  public void deleteByAccessToken(String accessToken) {
+    JwtToken jwtToken = jwtTokenRepository.findByAccessToken(accessToken);
     if(jwtToken != null) {
       jwtTokenRepository.delete(jwtToken);
     }
   }
 
+  public boolean dataAlreadyExist(String email) {
+    Optional<User> user = userRepository.findByEmail(email);
+    if(user.isPresent()) {
+      Optional<JwtToken> jwtToken = jwtTokenRepository.findByUserId(user.get().getId());
+      if(jwtToken.isPresent()) {
+        jwtTokenRepository.delete(jwtToken.get());
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
+  public boolean userIsPresent(String email) {
+    Optional<User> user = userRepository.findByEmail(email);
+    return user.isPresent();
+  }
+
   public JwtToken updateNewAccessToken(String newAccessToken, String refreshToken) {
-    JwtToken jwtToken = jwtTokenRepository.findByRefreshToken(refreshToken);
-    if(jwtToken != null) {
-      jwtToken.setAccessToken(newAccessToken);
-      return jwtTokenRepository.save(jwtToken);
+    Optional<JwtToken> jwtToken = jwtTokenRepository.findByRefreshToken(refreshToken);
+    if(jwtToken.isPresent()) {
+      jwtToken.get().setAccessToken(newAccessToken);
+      return jwtTokenRepository.save(jwtToken.get());
     }
     throw new RuntimeException("업데이트 오류");
   }
