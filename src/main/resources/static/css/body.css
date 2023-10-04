@@ -1,0 +1,58 @@
+.container {
+    width: 100%;
+    height: calc(100vh - 3rem);
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url("../images/default-bg-img.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.container .main {
+    margin: 0 5%;
+    padding-top: 2rem;
+    width: 90%;
+}
+.container .main .title {
+    margin-bottom: 1rem;
+}
+.container .main h2 {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 700;
+}
+.container .main h3 {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 500;
+}
+.container .main input {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    position: absolute;
+    left: 5%;
+    width: 80%;
+    height: 2.5rem;
+    border-radius: 2rem;
+    padding: 0 5%;
+    border: 0;
+    font-size: 1rem;
+    font-weight: 300;
+    outline: none;
+}
+.container .main button {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    color: #fff;
+    border-radius: 2rem;
+    height: 2.5rem;
+    width: 5rem;
+    position: absolute;
+    right: 5%;
+    border: 0;
+    background: #0d63fd;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
+}
+.container .main button:hover {
+    cursor: pointer;
+}

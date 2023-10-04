@@ -1,55 +1,58 @@
-body {
-    height: 100vh;
-    /* vh단위는 뷰포트 세로 너비의 백분율 창을 줄여도 높이 그대로 */
+.container {
+    width: 100%;
+    height: calc(100vh - 3rem);
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url("../images/default-bg-img.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
-
-.form-signin {
-    max-width: 330px;
-    padding: 15px;
-    margin: 0 auto;
+.form {
+    padding-top: 2rem;
+    text-align: center;
 }
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-    margin-bottom: 10px;
+.form h2 {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
 }
-.form-signin .checkbox {
-    font-weight: 400;
+.form .form-wrapper {
+    display: inline-block;
 }
-.form-signin .form-control {
-    position: relative;
-    box-sizing: border-box;
-    height: auto;
-    padding: 10px;
-    font-size: 16px;
+.form div label {
+    margin-top: 0.5rem;
+    color: #fff;
+    display: block;
+    float: left;
+    height: 2rem;
+    line-height: 2rem;
 }
-.form-signin .form-control:focus {
-    z-index: 2;
+.form div input {
+    width: 15rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    font-weight: 300;
+    border: 0;
+    padding-left: 1rem;
 }
-.form-signin input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+.form .form-wrapper button {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    color: #fff;
+    border-radius: 1.5rem;
+    width: 16rem;
+    height: 2rem;
+    border: 0;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    background: #0d63fd;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
 }
-.form-signin input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
-.google-img {
-    width: 300px;
-    height: 50px;
-   margin: 5px 0 5px 0;
-}
-
-.naver-img {
-    width: 300px;
-    height: 50px;
-    margin-bottom: 5px;
-}
-
-.kakao-img {
-    width: 300px;
-    height: 50px;
-    margin-bottom: 5px;
+.sns-img {
+    margin-top: 1rem;
+    width: 16rem;
+    height: 3rem;
 }
