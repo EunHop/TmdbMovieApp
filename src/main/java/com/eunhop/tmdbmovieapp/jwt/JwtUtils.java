@@ -72,7 +72,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + (Long.parseLong(JwtProperties.ACCESS_EXPIRATION_TIME.getDescription()) * 1000))) // 토큰 만료 시간 설정
+                .setExpiration(new Date(now.getTime() + (JwtProperties.ACCESS_TOKEN.getTime() * 1000))) // 토큰 만료 시간 설정
                 .setHeaderParam(JwsHeader.KEY_ID, key.getFirst()) // kid
                 .signWith(key.getSecond()) // signature
                 .compact();
@@ -94,7 +94,7 @@ public class JwtUtils {
         return Jwts.builder()
             .setClaims(claims) // 정보 저장
             .setIssuedAt(now) // 토큰 발행 시간 정보
-            .setExpiration(new Date(now.getTime() + (Long.parseLong(JwtProperties.REFRESH_EXPIRATION_TIME.getDescription()) * 1000))) // 토큰 만료 시간 설정
+            .setExpiration(new Date(now.getTime() + (JwtProperties.REFRESH_TOKEN.getTime() * 1000))) // 토큰 만료 시간 설정
             .setHeaderParam(JwsHeader.KEY_ID, key.getFirst()) // kid
             .signWith(key.getSecond()) // signature
             .compact();

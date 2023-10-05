@@ -107,8 +107,8 @@ public class SecurityConfig {
             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             .logoutSuccessUrl("/")
             .invalidateHttpSession(true)
-            .deleteCookies(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription())
-            .deleteCookies(JwtProperties.REFRESH_TOKEN_COOKIE_NAME.getDescription())
+            .deleteCookies(JwtProperties.ACCESS_TOKEN.getDescription())
+            .deleteCookies(JwtProperties.REFRESH_TOKEN.getDescription())
         )
     ;
     return http.build();

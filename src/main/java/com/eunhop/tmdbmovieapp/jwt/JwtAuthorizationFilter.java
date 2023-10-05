@@ -47,11 +47,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     String jwtRefreshToken = null;
     try {
       jwtAccessToken = Arrays.stream(request.getCookies())
-          .filter(cookie -> cookie.getName().equals(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription())).findFirst()
+          .filter(cookie -> cookie.getName().equals(JwtProperties.ACCESS_TOKEN.getDescription())).findFirst()
           .map(Cookie::getValue)
           .orElse(null);
       jwtRefreshToken = Arrays.stream(request.getCookies())
-          .filter(cookie -> cookie.getName().equals(JwtProperties.REFRESH_TOKEN_COOKIE_NAME.getDescription())).findFirst()
+          .filter(cookie -> cookie.getName().equals(JwtProperties.REFRESH_TOKEN.getDescription())).findFirst()
           .map(Cookie::getValue)
           .orElse(null);
     } catch (Exception ignored) {}
@@ -70,8 +70,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         else {
           String newJwtAccessToken = JwtUtils.createAccessToken(refresh.get().getUser().getEmail());
           jwtTokenService.updateNewAccessToken(newJwtAccessToken, jwtRefreshToken);
-          Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription(), newJwtAccessToken);
-          cookie1.setMaxAge(Integer.parseInt(JwtProperties.ACCESS_EXPIRATION_TIME.getDescription())); // 쿠키의 만료시간 설정
+          Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), newJwtAccessToken);
+          cookie1.setMaxAge(JwtProperties.ACCESS_TOKEN.getTime()); // 쿠키의 만료시간 설정
           cookie1.setSecure(true);
           cookie1.setHttpOnly(true);
           cookie1.setPath("/");
@@ -110,9 +110,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
   }
 
   private void cookieDelete(HttpServletResponse response) {
-    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription(), null);
+    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), null);
     cookie1.setMaxAge(0);
-    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN_COOKIE_NAME.getDescription(), null);
+    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN.getDescription(), null);
     cookie2.setMaxAge(0);
     response.addCookie(cookie1);
     response.addCookie(cookie2);

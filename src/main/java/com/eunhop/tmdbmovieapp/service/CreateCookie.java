@@ -43,13 +43,13 @@ public class CreateCookie {
   }
 
   public void createCookie(HttpServletResponse response, String jwtAccessToken, String jwtRefreshToken) {
-    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN_COOKIE_NAME.getDescription(), jwtAccessToken);
-    cookie1.setMaxAge(Integer.parseInt(JwtProperties.ACCESS_EXPIRATION_TIME.getDescription())); // 쿠키의 만료시간 설정
+    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), jwtAccessToken);
+    cookie1.setMaxAge(JwtProperties.ACCESS_TOKEN.getTime()); // 쿠키의 만료시간 설정
     cookie1.setSecure(true);
     cookie1.setHttpOnly(true);
     cookie1.setPath("/");
-    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN_COOKIE_NAME.getDescription(), jwtRefreshToken);
-    cookie2.setMaxAge(Integer.parseInt(JwtProperties.REFRESH_EXPIRATION_TIME.getDescription())); // 쿠키의 만료시간 설정
+    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN.getDescription(), jwtRefreshToken);
+    cookie2.setMaxAge(JwtProperties.REFRESH_TOKEN.getTime()); // 쿠키의 만료시간 설정
     cookie2.setSecure(true);
     cookie2.setHttpOnly(true);
     cookie2.setPath("/");
