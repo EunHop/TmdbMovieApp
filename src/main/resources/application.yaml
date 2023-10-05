@@ -39,7 +39,7 @@ spring:
     livereload:
       enabled: true
     restart:
-      quiet-period: 500ms
+      quiet-period: 400ms
 
   data:
     rest:
@@ -55,4 +55,6 @@ management:
       exposure:
         include: '*'
 debug: true
-
+tmdb:
+  api:
+    key: ${TMDB_API_KEY}

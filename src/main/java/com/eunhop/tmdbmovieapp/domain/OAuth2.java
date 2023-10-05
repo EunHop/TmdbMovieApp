@@ -18,11 +18,14 @@ public class OAuth2 extends BaseEntity {
   private Long id;
 
   @NotNull
+  @Column(length = 100)
   private String email;
 
   @NotNull
+  @Column(length = 100)
   private String name;
 
+  @Column(length = 100)
   private String provider;
 
   @ManyToOne

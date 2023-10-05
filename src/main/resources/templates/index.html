@@ -5,7 +5,7 @@
 <body>
 <header th:insert="~{fragments.html::nav}"></header>
 <div class="container">
-  <div class="main">
+  <div class="search_wrapper">
     <div class="title">
       <h2>Welcome.</h2>
       <h3>Search movies what you are looking for</h3>
@@ -19,6 +19,21 @@
       </form>
     </div>
   </div>
+  <div class="movies">
+    <div class="column">
+      <h2>인기 영화</h2>
+    </div>
+    <div class="movies_wrapper">
+      <a th:each="movie : ${movieList}" th:href="@{#}" class="movie"
+         th:style="'background-image: url(https://www.themoviedb.org/t/p/w220_and_h330_face/'+${movie.poster_path}+')'">
+        <div class="info">
+          <div class="date" th:text="${movie.release_date}">8월,11일 2023</div>
+          <div class="title" th:text="${movie.title}">그란투리스모</div>
+        </div>
+      </a>
+    </div>
+  </div>
 </div>
+<footer th:insert="~{fragments.html::footer}"></footer>
 </body>
 </html>

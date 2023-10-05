@@ -1,0 +1,4 @@
+GET /3/movie/popular?language=ko-KR&page=1 HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YTY2YTRiNzExYzAxMDUwMjU2NjI2MTlkMTY4NTMxYSIsInN1YiI6IjY1MGMyMGI3MmM2YjdiMDBjNGZkZGUzYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.L5fVXsmgUwGk41p8mLq-ANG44qmVXaA6NljXJBH1FXg
+Host: api.themoviedb.org

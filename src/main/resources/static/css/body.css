@@ -1,58 +1,126 @@
 .container {
     width: 100%;
-    height: calc(100vh - 3rem);
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url("../images/default-bg-img.jpg");
+}
+.container .search_wrapper {
+    padding: 10%;
+    width: 80%;
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url("../images/default-bg-img.jpg");
     background-size: cover;
-    background-repeat: no-repeat;
     background-position: center;
 }
-.container .main {
-    margin: 0 5%;
-    padding-top: 2rem;
-    width: 90%;
-}
-.container .main .title {
+.container .search_wrapper .title {
     margin-bottom: 1rem;
 }
-.container .main h2 {
+.container .search_wrapper h2 {
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     color: #fff;
     font-size: 3rem;
     font-weight: 700;
 }
-.container .main h3 {
+.container .search_wrapper h3 {
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     color: #fff;
     font-size: 2rem;
     font-weight: 500;
 }
-.container .main input {
+.container .search_wrapper .search {
+    height: 2.5rem;
+}
+.container .search_wrapper input {
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     position: absolute;
-    left: 5%;
-    width: 80%;
+    left: 10%;
+    width: 75%;
     height: 2.5rem;
     border-radius: 2rem;
-    padding: 0 5%;
+    padding: 0 2.5%;
     border: 0;
     font-size: 1rem;
     font-weight: 300;
     outline: none;
 }
-.container .main button {
+.container .search_wrapper button {
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     color: #fff;
     border-radius: 2rem;
     height: 2.5rem;
     width: 5rem;
     position: absolute;
-    right: 5%;
+    right: 10%;
     border: 0;
     background: #0d63fd;
     font-size: 1rem;
     font-weight: 500;
     outline: none;
 }
-.container .main button:hover {
+.container .search_wrapper button:hover {
     cursor: pointer;
+}
+.movies {
+    margin: 0 10%;
+    padding-top: 2rem;
+    width: 80%;
+}
+.movies_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.column {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+.movie {
+    background-image: url("test-poster-img.jpg");
+    background-position: center;
+    background-size: cover;
+    width: 11rem;
+    height: 15rem;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    position: relative;
+}
+.info {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 86%;
+    font-size: 0.9rem;
+    padding: 1rem 7%;
+    background-color: rgba(0,0,0,0.3);
+    backdrop-filter: blur(1rem);
+}
+.title {
+    margin-top: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+@media (max-width: 576px) {
+    .container .search_wrapper h2 {
+        font-size: 2.5rem;
+    }
+    .container .search_wrapper h3 {
+        font-size: 1.5rem;
+    }
+    .container .search_wrapper input {
+        font-size: 0.8rem;
+    }
+    .container .search_wrapper button {
+        font-size: 0.8rem;
+    }
+    .column {
+        font-size: 1.5rem;
+    }
+    .movie {
+        width: 6rem;
+        height: 10rem;
+    }
+    .info {
+        font-size: 0.7rem;
+    }
 }

@@ -20,6 +20,7 @@ public class Movie extends BaseEntity {
 
   private Long movieApiId;
 
+  @Column(length = 100)
   private String title;
 
   @Column(length = 500)
@@ -30,7 +31,8 @@ public class Movie extends BaseEntity {
   @Column(length = 500)
   private String posterPath;
 
-  private LocalDate release_date;
+  @Column(length = 100)
+  private String release_date;
 
   private Float voteAverage;
 

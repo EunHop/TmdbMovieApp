@@ -40,7 +40,7 @@
 .form .form-wrapper button {
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     color: #fff;
-    border-radius: 1.5rem;
+    border-radius: 0.5rem;
     width: 16rem;
     height: 2rem;
     border: 0;
@@ -55,4 +55,9 @@
     margin-top: 1rem;
     width: 16rem;
     height: 3rem;
+}
+.sns-google-img {
+    margin-top: 1rem;
+    width: 16.5rem;
+    height: 3.5rem;
 }

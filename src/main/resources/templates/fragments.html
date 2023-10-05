@@ -11,12 +11,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
   <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/eunhop-logo.png}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;500;700&family=Roboto:ital,wght@1,300;1,500;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;500;700&family=Roboto:ital,wght@1,300;1,500;1,700&display=swap"
+      rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script th:src="@{/js/index.js}" defer></script>
 </head>
 <body>
 <!-- fragment navigation bar를 정의합니다. -->
@@ -32,7 +38,9 @@
       <li>
         <!-- 로그인 한 사람 모두 -->
         <a sec:authorize="isAuthenticated()" th:href="@{/}">
-          <span class="google-icon" title="Favorite">favorite</span>
+          <span class="google-icon" title="Favorite">
+          <span class="desktop-header">관심목록</span>
+            favorite</span>
         </a>
       </li>
     </ul>
@@ -41,29 +49,54 @@
     <ul>
       <li>
         <!-- 로그인 안한 사람만 -->
-        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">
-          <span class="google-icon" title="Login">login</span>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">
+          <span class="google-icon" title="Sign Up">
+          <span class="desktop-header">회원가입</span>
+            person_add</span>
         </a>
       </li>
       <li>
         <!-- 로그인 안한 사람만 -->
-        <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">
-          <span class="google-icon" title="Sign Up">person_add</span>
-        </a>
-      </li>
-      <li>
-        <!-- 로그인한 사람만 -->
-        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">
-          <span class="google-icon" title="Logout">logout</span>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">
+          <span class="google-icon" title="Login">
+            <span class="desktop-header">로그인</span>
+            login</span>
         </a>
       </li>
       <li>
         <!-- 로그인한 사람만 -->
         <a sec:authorize="isAuthenticated()" th:href="@{/}">
-          <span class="google-icon" title="My info">account_circle</span>
+          <span class="google-icon" title="My info">
+          <span class="desktop-header">내정보</span>
+            account_circle</span>
+        </a>
+      </li>
+      <li>
+        <!-- 로그인한 사람만 -->
+        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">
+          <span class="google-icon" title="Logout">
+          <span class="desktop-header">로그아웃</span>
+            logout</span>
         </a>
       </li>
     </ul>
+  </div>
+</div>
+<div class="footer" th:fragment="footer">
+  <div class="footer_left">
+    <a class="logo">
+      <img src="/images/eunhop-logo.png" alt="Logo">
+      <span class="title">MovieApp</span>
+    </a>
+  </div>
+  <div class="footer_right">
+    <div>
+      <span class="mail-icon">mail</span>
+      <span>thffoa99@gmail.com</span>
+    </div>
+    <div>
+      Copyright ⓒ 2023 <a href="https://github.com/EunHop/TmdbMovieApp" target="_blank">Github_EunHop</a> All rights reserved.
+    </div>
   </div>
 </div>
 </body>

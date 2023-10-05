@@ -21,8 +21,10 @@ public class Notice extends BaseEntity {
   @Column(length = 500)
   private String content;
 
+  @Column(length = 100)
   private String createBy;
 
+  @Column(length = 100)
   private String modifiedBy;
 
 
