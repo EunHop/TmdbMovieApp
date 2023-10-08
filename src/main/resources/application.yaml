@@ -39,7 +39,7 @@ spring:
     livereload:
       enabled: true
     restart:
-      quiet-period: 400ms
+      quiet-period: 900ms
 
   data:
     rest:

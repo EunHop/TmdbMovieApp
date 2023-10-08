@@ -40,7 +40,7 @@ public class UserController {
     public String signup(@ModelAttribute User user, HttpServletResponse response) {
         userService.registration(user);
         userService.login(response, user);
-        // 회원가입 후 로그인 페이지로 이동
+        // 회원가입 후 자동 로그인
         return "index";
     }
 

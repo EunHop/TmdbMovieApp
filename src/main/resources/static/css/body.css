@@ -1,6 +1,9 @@
 .container {
     width: 100%;
 }
+a {
+    text-decoration: none;
+}
 .container .search_wrapper {
     padding: 10%;
     width: 80%;
@@ -22,6 +25,7 @@
     color: #fff;
     font-size: 2rem;
     font-weight: 500;
+    white-space: break-spaces;
 }
 .container .search_wrapper .search {
     height: 2.5rem;
@@ -57,9 +61,11 @@
     cursor: pointer;
 }
 .movies {
-    margin: 0 10%;
-    padding-top: 2rem;
+    margin: 1rem 5%;
+    padding: 1rem 5%;
     width: 80%;
+    background-color: #E9ECEF;
+    border-radius: 1rem;
 }
 .movies_wrapper {
     display: flex;
@@ -68,15 +74,43 @@
 }
 .column {
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.column h2 {
     font-size: 2rem;
-    margin-bottom: 1rem;
     font-weight: 700;
 }
+.media_wrapper {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 300;
+}
+.column a {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    display: block;
+    color: #000;
+    margin: 0.5rem 0;
+}
+.selected {
+    background: #cbd2d9;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+.media_size {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    font-size: 1.9rem;
+    margin-left: 0.5rem;
+}
 .movie {
-    background-image: url("test-poster-img.jpg");
+    background-image: url("../images/default-no-image.jpg");
     background-position: center;
     background-size: cover;
-    width: 11rem;
+    display: flex;
+    width: 10rem;
     height: 15rem;
     margin: 0.5rem;
     border-radius: 0.5rem;
@@ -89,6 +123,7 @@
     position: absolute;
     bottom: 0;
     width: 86%;
+    border-radius: 0.5rem;
     font-size: 0.9rem;
     padding: 1rem 7%;
     background-color: rgba(0,0,0,0.3);
@@ -99,6 +134,39 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.page-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+.page-wrapper a {
+    font-size: 1.2rem;
+    color: #000;
+}
+.num-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.num {
+    margin: 0.5rem;
+}
+.previous {
+    margin: 0.5rem;
+}
+.next {
+    margin: 0.5rem;
+}
+.current {
+    border: 0.1rem solid;
+}
+.page-icon {
+    font-family: 'Material Symbols Rounded';
+    font-size: 1rem;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;
 }
 @media (max-width: 576px) {
     .container .search_wrapper h2 {
@@ -122,5 +190,8 @@
     }
     .info {
         font-size: 0.7rem;
+    }
+    .page-wrapper a {
+        font-size: 1.5rem;
     }
 }
