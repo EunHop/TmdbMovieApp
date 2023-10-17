@@ -3,80 +3,121 @@ header {
     width: 100%;
     height: 3rem;
 }
+
 a {
     text-decoration: none;
 }
+
+.header {
+    display: flex;
+    justify-content: center;
+}
+
 .nav {
-    width: 80%;
-    margin: 0 10%;
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    width: 85rem;
+    margin: 0 2rem;
+    display: flex;
+    align-items: center;
 }
-.nav_to_right {
-    display: inline-block;
+.mobile_menu {
+    display: none;
 }
+.nav_to_right ul {
+    line-height: 3rem;
+}
+
 .nav_to_right ul li {
     list-style-type: none;
     float: left;
 }
+
 .nav_to_right ul li:nth-child(2) {
-    margin-left: 0.5rem;
+    margin-left: 1rem;
+}
+
+.nav_to_right ul li:nth-child(3) {
+    margin-left: 1rem;
 }
 .nav_to_right ul li:first-child {
 }
-.nav_to_right ul li a {
-    line-height: 3rem;
-    display: inline-block;
-    height: 3rem;
+
+.nav_to_right a {
+    display: flex;
+    align-items: center;
     color: white;
 }
-.nav_to_right ul li a .title {
-    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+
+.nav_title {
     font-weight: 700;
-    font-size: 1.2em;
+    font-size: 1.5em;
 }
-.nav_to_right ul li a img {
-    transform: translateY(0.2rem);
-    width: 1.2rem;
-    height: 1.2rem;
+
+.nav_to_right img {
+    width: 1.5rem;
 }
+
 .nav_to_left {
-    display: inline-block;
     float: right;
+    flex-grow: 1;
 }
+
 .nav_to_left ul li {
     list-style-type: none;
     float: right;
 }
+
 .nav_to_left ul li:first-child {
-    margin-left: 0.7rem;
+    margin-left: 1rem;
 }
+
 .nav_to_left ul li:nth-child(3) {
-    margin-left: 0.7rem;
+    margin-left: 1rem;
 }
+
 .nav_to_left ul li a {
     line-height: 3rem;
     display: inline-block;
     height: 3rem;
     color: white;
 }
+
 .google-icon {
     font-family: 'Material Symbols Rounded';
     font-size: 2rem;
     font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;
     transition: all 0.5s;
 }
+
 .google-icon:hover {
     font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
 }
+
 .desktop-header {
-    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     font-size: 1rem;
     float: left;
 }
-@media (max-width: 576px) {
+
+@media (max-width: 650px) {
+    .nav {
+        margin: 0 0.5rem;
+    }
+    .mobile_menu {
+        display: flex;
+        color: white;
+        flex-grow: 1;
+    }
+    .nav_to_right ul li:nth-child(2) {
+        display: none;
+    }
+    .nav_to_right ul li:nth-child(3) {
+        display: none;
+    }
     .desktop-header {
         display: none;
     }
-    .google-icon {
-        font-size: 1.5rem;
+
+    .nav_to_right img {
+        width: 1.2rem;
     }
 }

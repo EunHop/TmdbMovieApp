@@ -9,6 +9,7 @@
   <title>EunHop Movie App</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="영화나 TV프로그램을 검색해보세요.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="/css/header.css">
   <link rel="stylesheet" type="text/css" href="/css/footer.css">
@@ -26,76 +27,91 @@
 </head>
 <body>
 <!-- fragment navigation bar를 정의합니다. -->
-<div class="nav" th:fragment="nav">
-  <div class="nav_to_right">
-    <ul>
-      <li>
-        <a th:href="@{/}">
-          <img src="/images/eunhop-logo.png" alt="Logo">
-          <span class="title">MovieApp</span>
-        </a>
-      </li>
-      <li>
-        <!-- 로그인 한 사람 모두 -->
-        <a sec:authorize="isAuthenticated()" th:href="@{/}">
+<div class="header" th:fragment="nav">
+  <div class="nav">
+    <div class="mobile_menu">
+      <span class="google-icon" title="menu">menu</span>
+    </div>
+    <div class="nav_to_right">
+      <ul>
+        <li>
+          <a th:href="@{/}">
+            <img src="/images/eunhop-logo.png" alt="Logo">
+            <span class="nav_title">MovieApp</span>
+          </a>
+        </li>
+        <li>
+          <!-- 로그인 한 사람 모두 -->
+          <a sec:authorize="isAuthenticated()" th:href="@{/}">
           <span class="google-icon" title="Favorite">
           <span class="desktop-header">관심목록</span>
             favorite</span>
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div class="nav_to_left">
-    <ul>
-      <li>
-        <!-- 로그인 안한 사람만 -->
-        <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">
+          </a>
+        </li>
+        <li>
+          <!-- 로그인 한 사람 모두 -->
+          <a sec:authorize="isAuthenticated()" th:href="@{/}">
+          <span class="google-icon" title="Favorite">
+          <span class="desktop-header">공지사항</span>
+            info</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav_to_left">
+      <ul>
+        <li>
+          <!-- 로그인 안한 사람만 -->
+          <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">
           <span class="google-icon" title="Sign Up">
           <span class="desktop-header">회원가입</span>
             person_add</span>
-        </a>
-      </li>
-      <li>
-        <!-- 로그인 안한 사람만 -->
-        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">
+          </a>
+        </li>
+        <li>
+          <!-- 로그인 안한 사람만 -->
+          <a sec:authorize="!isAuthenticated()" th:href="@{/login}">
           <span class="google-icon" title="Login">
             <span class="desktop-header">로그인</span>
             login</span>
-        </a>
-      </li>
-      <li>
-        <!-- 로그인한 사람만 -->
-        <a sec:authorize="isAuthenticated()" th:href="@{/}">
+          </a>
+        </li>
+        <li>
+          <!-- 로그인한 사람만 -->
+          <a sec:authorize="isAuthenticated()" th:href="@{/}">
           <span class="google-icon" title="My info">
           <span class="desktop-header">내정보</span>
             account_circle</span>
-        </a>
-      </li>
-      <li>
-        <!-- 로그인한 사람만 -->
-        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">
+          </a>
+        </li>
+        <li>
+          <!-- 로그인한 사람만 -->
+          <a sec:authorize="isAuthenticated()" th:href="@{/logout}">
           <span class="google-icon" title="Logout">
           <span class="desktop-header">로그아웃</span>
             logout</span>
-        </a>
-      </li>
-    </ul>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 <div class="footer" th:fragment="footer">
-  <div class="footer_left">
-    <a class="logo">
-      <img src="/images/eunhop-logo.png" alt="Logo">
-      <span class="title">MovieApp</span>
-    </a>
-  </div>
-  <div class="footer_right">
-    <div>
-      <span class="mail-icon">mail</span>
-      <span>thffoa99@gmail.com</span>
+  <div class="footer_wrapper">
+    <div class="footer_left">
+      <a href="javascript:;" class="logo">
+        <img src="/images/eunhop-logo.png" alt="Logo">
+        <span class="footer_title">MovieApp</span>
+      </a>
     </div>
-    <div>
-      Copyright ⓒ 2023 <a href="https://github.com/EunHop/TmdbMovieApp" target="_blank">Github_EunHop</a> All rights reserved.
+    <div class="footer_right">
+      <div>
+        <span class="mail-icon">mail</span>
+        <span>thffoa99@gmail.com</span>
+      </div>
+      <div>
+        Copyright ⓒ 2023 <a href="https://github.com/EunHop/TmdbMovieApp" target="_blank">Github_EunHop</a> All rights reserved.
+      </div>
     </div>
   </div>
 </div>

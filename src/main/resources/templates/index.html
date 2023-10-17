@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="https://www.thymeleaf.org">
 <link rel="stylesheet" type="text/css" href="/css/body.css">
-<head th:insert="~{fragments.html::header}"><title>EunHop Movie App</title></head>
+<head th:insert="~{fragments.html::header}"></head>
 <body>
 <header th:insert="~{fragments.html::nav}"></header>
 <div class="container">
-  <div class="search_wrapper">
-    <div class="title">
+  <div class="search_wrapper" th:style="'background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url(https://image.tmdb.org/t/p/w1280'+${backdrop!=null ? backdrop.results.get(randomNum).backdrop_path : mainList.results.get(randomNum).backdrop_path}+')'">
+    <div class="search_title">
       <h2>Welcome.</h2>
       <h3>Search movies, TV shows whatever you are looking for</h3>
     </div>
@@ -27,52 +27,53 @@
         <a th:if="${param.query!=null && media != 'movie'}"  th:href="@{/search/movie(query=${param.query},page=${1})}">영화</a>
         <a th:if="${param.query!=null && media == 'tv'}" class="selected" th:href="@{/search/tv(query=${param.query},page=${1})}">TV 프로그램</a>
         <a th:if="${param.query!=null && media != 'tv'}" th:href="@{/search/tv(query=${param.query},page=${1})}">TV 프로그램</a>
+        <h2 th:if="${param.query==null}">최근 인기</h2>
+        <span th:unless="${param.query==null}" class="media_size" th:text="${mainList.total_results}+'개'"></span>
       </div>
-      <h2 th:if="${param.query==null}">최근 인기</h2>
-      <span th:unless="${param.query==null}" class="media_size" th:text="${movieList.total_results}+'개'"></span>
+
     </div>
     <div class="movies_wrapper">
-      <div th:each="movie : ${movieList.getTmdbMovies()}">
-        <a th:if="${movie.poster_path!=null}" th:href="@{/details/{media_type}/{tmdb_movie_id}(media_type=${movie.media_type},tmdb_movie_id=${movie.tmdb_movie_id})}"
+      <div th:each="movie : ${mainList.results}">
+        <a th:if="${movie.poster_path!=null}" th:href="@{/details/{media_type}/{id}(media_type=${movie.media_type},id=${movie.id})}"
            class="movie"
-           th:style="'background-image: url(https://www.themoviedb.org/t/p/w220_and_h330_face'+${movie.poster_path}+')'">
+           th:style="'background-image: url(https://image.tmdb.org/t/p/w342'+${movie.poster_path}+')'">
           <div class="info">
-            <div class="date" th:if="${movie.release_date!=null}" th:text="${movie.release_date}"></div>
-            <div class="date" th:unless="${movie.release_date!=null}" th:text="${movie.first_air_date}"></div>
-            <div class="title" th:if="${movie.title!=null}" th:text="${movie.title}"></div>
-            <div class="title" th:unless="${movie.title!=null}" th:text="${movie.name}"></div>
+            <div class="info_date" th:if="${movie.release_date!=null}" th:text="${movie.release_date}"></div>
+            <div class="info_date" th:unless="${movie.release_date!=null}" th:text="${movie.first_air_date}"></div>
+            <div class="info_title" th:if="${movie.title!=null}" th:text="${movie.title}"></div>
+            <div class="info_title" th:unless="${movie.title!=null}" th:text="${movie.name}"></div>
           </div>
         </a>
         <a th:unless="${movie.poster_path!=null}"
-           th:href="@{/details/{media_type}/{tmdb_movie_id}(media_type=${movie.media_type},tmdb_movie_id=${movie.tmdb_movie_id})}" class="movie">
+           th:href="@{/details/{media_type}/{id}(media_type=${movie.media_type},id=${movie.id})}" class="movie">
           <div class="info">
-            <div class="date" th:if="${movie.release_date!=null}" th:text="${movie.release_date}"></div>
-            <div class="date" th:unless="${movie.release_date!=null}" th:text="${movie.first_air_date}"></div>
-            <div class="title" th:if="${movie.title!=null}" th:text="${movie.title}"></div>
-            <div class="title" th:unless="${movie.title!=null}" th:text="${movie.name}"></div>
+            <div class="info_date" th:if="${movie.release_date!=null}" th:text="${movie.release_date}"></div>
+            <div class="info_date" th:unless="${movie.release_date!=null}" th:text="${movie.first_air_date}"></div>
+            <div class="info_title" th:if="${movie.title!=null}" th:text="${movie.title}"></div>
+            <div class="info_title" th:unless="${movie.title!=null}" th:text="${movie.name}"></div>
           </div>
         </a>
       </div>
     </div>
     <div th:if="${param.query !=null}" class="page-wrapper">
-      <a class="previous" th:if="${(movieList.page - 1)/10 >= 1}" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${((movieList.page - 1)/10)*10 - 9})}">
+      <a class="previous" th:if="${(mainList.page - 1)/10 >= 1}" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${((mainList.page - 1)/10)*10 - 9})}">
         <span class="page-icon">arrow_back</span>이전
       </a>
-      <div th:if="${movieList.total_pages>=10}" th:each="number : ${#numbers.sequence(1,(movieList.total_pages/10))}">
-        <div class="num-wrapper" th:if="${number == ((movieList.page - 1)/10)+1}">
+      <div th:if="${mainList.total_pages>=10}" th:each="number : ${#numbers.sequence(1,(mainList.total_pages/10))}">
+        <div class="num-wrapper" th:if="${number == ((mainList.page - 1)/10)+1}">
           <div class="num" th:each="num : ${#numbers.sequence(1+((number - 1) * 10),number * 10)}">
-            <a th:if="${movieList.page == num}" class="current" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${num})}" th:text="${num}"></a>
-            <a th:unless="${movieList.page == num}" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${num})}" th:text="${num}"></a>
+            <a th:if="${mainList.page == num}" class="current" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${num})}" th:text="${num}"></a>
+            <a th:unless="${mainList.page == num}" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${num})}" th:text="${num}"></a>
           </div>
         </div>
       </div>
-      <div class="num-wrapper" th:if="${movieList.page/10 == movieList.total_pages/10 && movieList.page%10 > 0}">
-        <div class="num" th:each="num : ${#numbers.sequence(1+((movieList.total_pages/10) * 10),movieList.total_pages)}">
-          <a th:if="${movieList.page == num}" class="current" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${num})}" th:text="${num}"></a>
-          <a th:unless="${movieList.page == num}" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${num})}" th:text="${num}"></a>
+      <div class="num-wrapper" th:if="${mainList.page/10 == mainList.total_pages/10 && mainList.page%10 > 0}">
+        <div class="num" th:each="num : ${#numbers.sequence(1+((mainList.total_pages/10) * 10),mainList.total_pages)}">
+          <a th:if="${mainList.page == num}" class="current" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${num})}" th:text="${num}"></a>
+          <a th:unless="${mainList.page == num}" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${num})}" th:text="${num}"></a>
         </div>
       </div>
-      <a th:if="${movieList.total_pages>10 && (movieList.page - 1)/10 != movieList.total_pages/10}" class="next" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${((movieList.page - 1)/10)*10 + 11})}">
+      <a th:if="${mainList.total_pages>10 && (mainList.page - 1)/10 != mainList.total_pages/10}" class="next" th:href="@{/search/{media}(media=__${media}__,query=${param.query},page=${((mainList.page - 1)/10)*10 + 11})}">
         다음<span class="page-icon">arrow_forward</span>
       </a>
     </div>

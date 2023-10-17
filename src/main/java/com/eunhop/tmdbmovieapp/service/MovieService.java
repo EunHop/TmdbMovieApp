@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -60,10 +59,10 @@ public class MovieService {
     List<Credits.Person> mainActors = results.getCast().stream().limit(6).toList();
     List<Credits.Person> directors = results.getCrew().stream().filter(job -> job.getJob().equals("Director")).toList();
     List<Credits.Person> writers = new ArrayList<>(results.getCrew().stream().filter(job -> job.getJob().equals("Writer")).toList());
-    for (int i = 0; i < directors.size(); i++) {
+    for (Credits.Person director : directors) {
       for (int j = 0; j < writers.size(); j++) {
-        if (directors.get(i).getName().equals(writers.get(j).getName())) {
-          directors.get(i).setJob(directors.get(i).getJob() + ", " + writers.get(j).getJob());
+        if (director.getName().equals(writers.get(j).getName())) {
+          director.setJob(director.getJob() + ", " + writers.get(j).getJob());
           writers.remove(writers.get(j));
         }
       }
@@ -79,20 +78,17 @@ public class MovieService {
         "https://api.themoviedb.org/3/tv/" + id + "/aggregate_credits?language=ko-KR",
         Credits.class
     );
-    List<Credits.Person> tvCredits = new ArrayList<>();
     List<Credits.Person> mainActors = results.getCast().stream().limit(6).toList();
-    for (int i = 0; i < mainActors.size(); i++) {
-      for (int j = 0; j < mainActors.get(i).getRoles().size(); j++) {
-        if(mainActors.get(i).getCharacter() == null) {
-          mainActors.get(i).setCharacter(mainActors.get(i).getRoles().get(j).getCharacter());
-        }
-        else {
-          mainActors.get(i).setCharacter(mainActors.get(i).getCharacter()+", "+mainActors.get(i).getRoles().get(j).getCharacter());
+    for (Credits.Person mainActor : mainActors) {
+      for (int j = 0; j < mainActor.getRoles().size(); j++) {
+        if (mainActor.getCharacter() == null) {
+          mainActor.setCharacter(mainActor.getRoles().get(j).getCharacter());
+        } else {
+          mainActor.setCharacter(mainActor.getCharacter() + ", " + mainActor.getRoles().get(j).getCharacter());
         }
       }
     }
-    tvCredits.addAll(mainActors);
-    return tvCredits;
+    return new ArrayList<>(mainActors);
   }
 
   private <T> T createResults(String uri, Class<T> elementClass) {

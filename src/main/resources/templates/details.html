@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/css/details.css">
+<head th:insert="~{fragments.html::header}"></head>
+<body>
+<header th:insert="~{fragments.html::nav}"></header>
+<div class="container">
+  <div class="details"
+       th:style="'background-image: url(https://image.tmdb.org/t/p/w1280'+${descriptionKR.backdrop_path}+')'">
+    <div class="details_wrapper">
+      <div class="content_wrapper">
+        <div class="poster_img">
+          <div class="poster_wrapper">
+            <img th:if="${descriptionKR.poster_path!=null}"
+                 th:src="'https://image.tmdb.org/t/p/w342'+${descriptionKR.poster_path}" alt="poster">
+            <img th:unless="${descriptionKR.poster_path!=null}" src="/images/default-no-image.jpg" alt="poster">
+          </div>
+        </div>
+        <div class="description_wrapper">
+          <div class="title_wrapper">
+            <span th:if="${descriptionKR.title!=null}" class="detail_title" th:text="${descriptionKR.title}"></span>
+            <span th:unless="${descriptionKR.title!=null}" class="detail_title" th:text="${descriptionKR.name}"></span>
+            <div th:if="${descriptionKR.release_date!=null}">
+              <span th:if="${descriptionKR.release_date.length()!=0}" class="year"
+                    th:text="${'('+descriptionKR.release_date.substring(0,4)+')'}"></span>
+              <span th:if="${descriptionKR.release_date.length()==0}" class="year"></span>
+            </div>
+            <div th:if="${descriptionKR.first_air_date!=null}">
+              <span th:if="${descriptionKR.first_air_date.length()==0}" class="year"></span>
+              <span th:if="${descriptionKR.first_air_date.length()!=0}" class="year"
+                    th:text="${'('+descriptionKR.first_air_date.substring(0,4)+')'}"></span>
+            </div>
+          </div>
+          <div class="score_and_date">
+            <div class="score_wrapper">
+              <div class="tmdb_logo"></div>
+              <span class="score" th:text="${descriptionKR.score+'%'}"></span>
+            </div>
+            <div class="date_and_genres">
+              <span class="date" th:if="${descriptionKR.release_date!=null}"
+                    th:text="${descriptionKR.release_date}"></span>
+              <span class="date" th:unless="${descriptionKR.release_date!=null}"
+                    th:text="${descriptionKR.first_air_date}"></span>
+              <div class="genre_wrapper">
+                <div class="genre" th:each="genre : ${descriptionKR.genres}">
+                  <span th:text="${genre.name}"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tagline">
+            <span th:if="${descriptionKR.tagline.length()!=0}" th:text="${descriptionKR.tagline}"></span>
+            <span th:unless="${descriptionKR.tagline.length()!=0}" th:text="${descriptionEN.tagline}"></span>
+          </div>
+          <div class="overview">
+            <p class="overview_title">개요</p>
+            <span th:if="${descriptionKR.overview.length()!=0}" th:text="${descriptionKR.overview}"></span>
+            <span th:unless="${descriptionKR.overview.length()!=0}" th:text="${descriptionEN.overview}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="persons_container">
+    <div class="persons">
+      <p th:if="${media=='movie'}" class="persons_title">주요 제작진</p>
+      <p th:if="${media=='tv' && emptyCheck }" class="persons_title">주요 제작진</p>
+      <div class="persons_wrapper">
+        <div th:if="${media == 'movie'}" class="person" th:each="person : ${producers}">
+          <img th:if="${person.profile_path!=null}" th:src="'https://image.tmdb.org/t/p/w185'+${person.profile_path}" alt="noImg">
+          <img th:unless="${person.profile_path!=null}" src="/images/default-no-image.jpg" alt="noImg">
+          <div class="person_info">
+            <p class="person_name" th:text="${person.name}"></p>
+            <p class="person_sub" th:text="${person.job}"></p>
+          </div>
+        </div>
+        <div th:unless="${media == 'movie'}" class="person" th:each="person : ${descriptionKR.created_by}">
+          <img th:if="${person.profile_path!=null}" th:src="'https://image.tmdb.org/t/p/w185'+${person.profile_path}" alt="noImg">
+          <img th:unless="${person.profile_path!=null}" src="/images/default-no-image.jpg" alt="noImg">
+          <div class="person_info">
+            <p class="person_name" th:text="${person.name}"></p>
+            <p class="person_sub">Creator</p>
+          </div>
+        </div>
+      </div>
+      <p class="persons_title">주요 출연진</p>
+      <div class="persons_wrapper">
+        <div class="person" th:each="person : ${actors}">
+          <img th:if="${person.profile_path!=null}" th:src="'https://image.tmdb.org/t/p/w185'+${person.profile_path}" alt="noImg">
+          <img th:unless="${person.profile_path!=null}" src="/images/default-no-image.jpg" alt="noImg">
+          <div class="person_info">
+            <p class="person_name" th:text="${person.name}"></p>
+            <p class="person_sub" th:text="${person.character}"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer th:insert="~{fragments.html::footer}"></footer>
+</body>
+</html>
