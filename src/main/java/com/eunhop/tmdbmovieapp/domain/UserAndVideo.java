@@ -9,9 +9,9 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@Table(name = "user_and_movie")
+@Table(name = "user_and_video")
 @Entity
-public class UserAndMovie extends BaseEntity {
+public class UserAndVideo extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -21,9 +21,9 @@ public class UserAndMovie extends BaseEntity {
 
   // UserAndMovie.getMovie()는 많지만 Movie.getUserAndMovie()는 없을것 같아 단방향 관계로 지었다. 2023/09/28
   @ManyToOne
-  private Movie movie;
+  private Video video;
 
-  @Column(length = 500)
+  @Column(length = 100)
   private String review;
 
   // review만 쓸경우 false, 관심목록 추가 버튼을 눌러야 true로 표시

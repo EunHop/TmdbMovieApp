@@ -1,23 +1,23 @@
 package com.eunhop.tmdbmovieapp.jwt;
 
 import com.eunhop.tmdbmovieapp.domain.Roles;
-import com.eunhop.tmdbmovieapp.dto.security.PrincipalUser;
 import com.eunhop.tmdbmovieapp.service.CreateCookie;
-import com.eunhop.tmdbmovieapp.service.JwtTokenService;
+import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -28,11 +28,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
   private final AuthenticationManager authenticationManager;
   private final CreateCookie createCookie;
+  private final CustomUserDetailsService customUserDetailsService;
 
-  public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CreateCookie createCookie) {
+  public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CreateCookie createCookie, CustomUserDetailsService customUserDetailsService) {
     super(authenticationManager);
     this.authenticationManager = authenticationManager;
     this.createCookie = createCookie;
+    this.customUserDetailsService = customUserDetailsService;
   }
 
   /**
@@ -43,8 +45,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       HttpServletResponse response
   ) throws AuthenticationException {
     // 로그인할 때 입력한 username과 password를 가지고 authenticationToken를 생성한다.
+    UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getParameter("email"));
     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-        request.getParameter("email"),
+        userDetails,
         request.getParameter("password"),
         List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
     );
@@ -70,9 +73,25 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   protected void unsuccessfulAuthentication(
       HttpServletRequest request,
       HttpServletResponse response,
-      AuthenticationException failed
+      AuthenticationException exception
   ) throws IOException {
-    response.sendRedirect("/login");
+    String errorMessage;
+    if(exception instanceof BadCredentialsException) {
+      errorMessage = "아이디 또는 비밀번호를 확인해주세요.";
+    }
+    else if(exception instanceof InternalAuthenticationServiceException) {
+      errorMessage = "내부적으로 발생한 시스템 문제로 인해 요청을 처리할 수 없습니다. 관리자에게 문의해주세요.";
+    }
+    else if(exception instanceof UsernameNotFoundException) {
+      errorMessage = "아이디 또는 비밀번호를 확인해주세요.";
+    }
+    else if(exception instanceof AuthenticationCredentialsNotFoundException) {
+      errorMessage = "인증 요청이 거부 되었습니다. 관리자에게 문의해주세요.";
+    } else {
+      errorMessage = "알 수 없는 이유로 로그인에 실패했습니다. 관리자에게 문의해주세요.";
+    }
+    errorMessage = URLEncoder.encode(errorMessage, StandardCharsets.UTF_8);
+    response.sendRedirect("/login?exception="+errorMessage);
   }
 
 }

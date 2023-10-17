@@ -1,19 +1,16 @@
 package com.eunhop.tmdbmovieapp.config;
 
-import com.eunhop.tmdbmovieapp.dto.security.PrincipalUser;
-import com.eunhop.tmdbmovieapp.oauth2.OAuth2ClientRegistration;
 import com.eunhop.tmdbmovieapp.domain.Roles;
-import com.eunhop.tmdbmovieapp.domain.User;
 import com.eunhop.tmdbmovieapp.jwt.JwtAuthenticationFilter;
 import com.eunhop.tmdbmovieapp.jwt.JwtAuthorizationFilter;
 import com.eunhop.tmdbmovieapp.jwt.JwtProperties;
-import com.eunhop.tmdbmovieapp.oauth2.OAuth2SuccessHandler;
-import com.eunhop.tmdbmovieapp.repository.UserRepository;
 import com.eunhop.tmdbmovieapp.oauth2.CustomOAuth2UserService;
 import com.eunhop.tmdbmovieapp.oauth2.GoogleOAuth2UserService;
+import com.eunhop.tmdbmovieapp.oauth2.OAuth2ClientRegistration;
+import com.eunhop.tmdbmovieapp.oauth2.OAuth2SuccessHandler;
 import com.eunhop.tmdbmovieapp.service.CreateCookie;
+import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import com.eunhop.tmdbmovieapp.service.JwtTokenService;
-import com.eunhop.tmdbmovieapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +22,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -39,18 +34,16 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final UserRepository userRepository;
-  private final UserService userService;
   private final JwtTokenService jwtTokenService;
   private final CreateCookie createCookie;
   private final OAuth2ClientRegistration oAuth2ClientRegistration;
+  private final CustomUserDetailsService customUserDetailsService;
 
 
   @Bean
@@ -93,7 +86,7 @@ public class SecurityConfig {
         .oauth2Login(oauth2 -> oauth2
             .loginPage("/login")
             .defaultSuccessUrl("/")
-            .successHandler(new OAuth2SuccessHandler(createCookie))
+            .successHandler(new OAuth2SuccessHandler(createCookie, customUserDetailsService))
             .clientRegistrationRepository(clientRegistrationRepository())
             .authorizedClientService(authorizedClientService())
             .userInfoEndpoint(user -> user
@@ -137,24 +130,13 @@ public class SecurityConfig {
   }
 
 
-  @Bean
-  public UserDetailsService userDetailsService() {
-    return email -> {
-      Optional<User> user = userService.findByEmail(email);
-      if (user.isEmpty()) {
-        throw new UsernameNotFoundException(email);
-      }
-      return PrincipalUser.builder().user(user.get()).build();
-    };
-  }
-
   public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
       AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
       http
-          .addFilterBefore(new JwtAuthenticationFilter(authenticationManager, createCookie), UsernamePasswordAuthenticationFilter.class)
-          .addFilterBefore(new JwtAuthorizationFilter(userRepository, jwtTokenService), BasicAuthenticationFilter.class);
+          .addFilterBefore(new JwtAuthenticationFilter(authenticationManager, createCookie, customUserDetailsService), UsernamePasswordAuthenticationFilter.class)
+          .addFilterBefore(new JwtAuthorizationFilter(customUserDetailsService, jwtTokenService), BasicAuthenticationFilter.class);
     }
   }
 }

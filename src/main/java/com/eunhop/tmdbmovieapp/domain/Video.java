@@ -3,22 +3,18 @@ package com.eunhop.tmdbmovieapp.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@Table(name = "movie")
+@Table(name = "video")
 @Entity
-public class Movie extends BaseEntity {
+public class Video extends BaseEntity {
+  // TMDB API의 movie나 TV의 id 그대로 기본키 지정
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  private Long movieApiId;
+  private int id;
 
   @Column(length = 100)
   private String title;
@@ -26,14 +22,15 @@ public class Movie extends BaseEntity {
   @Column(length = 500)
   private String overview;
 
-  private Float popularity;
+  private String tagline;
 
   @Column(length = 500)
-  private String posterPath;
+  private String poster_path;
+
+  private String media_type;
 
   @Column(length = 100)
   private String release_date;
 
-  private Float voteAverage;
-
+  private int score;
 }

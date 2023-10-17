@@ -1,14 +1,9 @@
 package com.eunhop.tmdbmovieapp.oauth2;
 
 import com.eunhop.tmdbmovieapp.domain.Roles;
-import com.eunhop.tmdbmovieapp.dto.security.PrincipalUser;
-import com.eunhop.tmdbmovieapp.jwt.JwtProperties;
-import com.eunhop.tmdbmovieapp.jwt.JwtUtils;
 import com.eunhop.tmdbmovieapp.service.CreateCookie;
-import com.eunhop.tmdbmovieapp.service.JwtTokenService;
-import com.eunhop.tmdbmovieapp.service.UserService;
+import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import java.io.IOException;
@@ -26,6 +22,7 @@ import java.util.List;
 @Slf4j
 public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
   private final CreateCookie createCookie;
+  private final CustomUserDetailsService customUserDetailsService;
 
   /**
    * 인증에 성공했을 때 사용
@@ -34,9 +31,10 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
     createCookie.createCookieUsingAuthentication(response, authentication);
+    UserDetails userDetails = customUserDetailsService.loadUserByUsername(authentication.getName());
 
     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-        authentication.getName(),
+        userDetails,
         authentication.getCredentials(),
         List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
     );

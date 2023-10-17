@@ -2,8 +2,7 @@ package com.eunhop.tmdbmovieapp.jwt;
 
 import com.eunhop.tmdbmovieapp.domain.JwtToken;
 import com.eunhop.tmdbmovieapp.domain.Roles;
-import com.eunhop.tmdbmovieapp.domain.User;
-import com.eunhop.tmdbmovieapp.repository.UserRepository;
+import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import com.eunhop.tmdbmovieapp.service.JwtTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -30,10 +30,10 @@ import java.util.Optional;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
   private final JwtTokenService jwtTokenService;
-  private final UserRepository userRepository;
+  private final CustomUserDetailsService customUserDetailsService;
 
-  public JwtAuthorizationFilter(UserRepository userRepository, JwtTokenService jwtTokenService) {
-    this.userRepository = userRepository;
+  public JwtAuthorizationFilter(CustomUserDetailsService customUserDetailsService, JwtTokenService jwtTokenService) {
+    this.customUserDetailsService = customUserDetailsService;
     this.jwtTokenService = jwtTokenService;
   }
 
@@ -97,14 +97,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     String email1 = JwtUtils.getUserEmail(accessToken);
     String email2 = JwtUtils.getUserEmail(refreshToken);
     if (email1 != null & email2 != null & Objects.equals(email1, email2)) {
-      Optional<User> user = userRepository.findByEmail(email1); // 유저를 이메일로 찾습니다.
-      if(user.isPresent()) {
+      UserDetails userDetails = customUserDetailsService.loadUserByUsername(email1);
         return new UsernamePasswordAuthenticationToken(
-            user.get().getEmail(), // principal
-            user.get().getPassword(),
+            userDetails, // principal
+            userDetails.getPassword(),
             List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
         );
-      }
     }
     return null; // 유저가 없으면 NULL
   }
