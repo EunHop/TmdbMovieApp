@@ -2,10 +2,7 @@ package com.eunhop.tmdbmovieapp.service;
 
 import com.eunhop.tmdbmovieapp.domain.Roles;
 import com.eunhop.tmdbmovieapp.domain.User;
-import com.eunhop.tmdbmovieapp.jwt.JwtProperties;
-import com.eunhop.tmdbmovieapp.jwt.JwtUtils;
 import com.eunhop.tmdbmovieapp.repository.UserRepository;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +27,6 @@ public class UserService {
   private final CreateCookie createCookie;
 
   public void registration(User user) {
-    if(userRepository.findByEmail(user.getEmail()).isPresent()) {
-      throw new RuntimeException("이메일이 이미 존재합니다.");
-    }
      userRepository.save(
          User.builder()
          .email(user.getEmail())
@@ -52,6 +46,10 @@ public class UserService {
         List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
     );
     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+  }
+
+  public boolean alreadySigned(User user) {
+    return userRepository.existsByEmail(user.getEmail());
   }
 
   public Optional<User> findByEmail(String email) {

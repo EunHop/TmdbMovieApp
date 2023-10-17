@@ -37,13 +37,25 @@
     border: 0;
     padding-left: 1rem;
 }
+.error_msg {
+    color: red;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16rem;
+    height: 2rem;
+    margin-top: 0.5rem;
+    background: #F8D7DA;
+    font-weight: 500;
+}
 .form .form-wrapper button {
     color: #fff;
     border-radius: 0.5rem;
     width: 16rem;
     height: 2rem;
     border: 0;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     background: #0d63fd;
     font-size: 1rem;

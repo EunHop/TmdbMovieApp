@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
 <link rel="stylesheet" type="text/css" th:href="@{/css/signin.css}">
-<head th:insert="~{fragments.html::header}"></head>
+<head th:insert="~{fragments.html::header}">
+</head>
 <body>
 <header th:insert="~{fragments.html::nav}"></header>
 <div class="container">
@@ -20,6 +21,9 @@
         <label for="name">닉네임</label>
         <div>
           <input type="text" id="name" name="name" placeholder="name">
+        </div>
+        <div th:if="${msg!=null}">
+          <span class="error_msg" th:text="${msg}"></span>
         </div>
         <button type="submit">회원가입</button>
       </div>
