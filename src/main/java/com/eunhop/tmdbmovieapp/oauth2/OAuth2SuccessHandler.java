@@ -1,7 +1,7 @@
 package com.eunhop.tmdbmovieapp.oauth2;
 
 import com.eunhop.tmdbmovieapp.domain.Roles;
-import com.eunhop.tmdbmovieapp.service.CreateCookie;
+import com.eunhop.tmdbmovieapp.jwt.CreateCookie;
 import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

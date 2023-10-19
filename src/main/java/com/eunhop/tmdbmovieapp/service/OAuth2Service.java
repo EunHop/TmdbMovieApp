@@ -27,7 +27,7 @@ public class OAuth2Service {
       String resName,
       String provider
   ) {
-    Optional<User> user = userRepository.findByEmailOrName(resEmail, resName);
+    Optional<User> user = userRepository.findByEmail(resEmail);
     Optional<OAuth2> existOauth2 = oAuth2Repository.findByProvider(provider);
     OAuth2 oauth2 = OAuth2.builder()
         .name(resName)
@@ -54,8 +54,7 @@ public class OAuth2Service {
   }
 
   public User findUser(String email) {
-    OAuth2 oAuth2 = oAuth2Repository.findByEmail(email).get(0);
-    Optional<User> findUser = userRepository.findById(oAuth2.getUser().getId());
+    Optional<User> findUser = userRepository.findByEmail(email);
     if(findUser.isPresent()) {
       return findUser.get();
     }
