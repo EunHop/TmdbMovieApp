@@ -46,6 +46,10 @@ spring:
       detection-strategy: default
   profiles:
     include: API-KEY
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 # Spring Actuator ??
 management:
