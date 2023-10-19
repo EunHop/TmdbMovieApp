@@ -61,8 +61,8 @@ public class JwtUtils {
      * PAYLOAD : sub, iat, exp
      * SIGNATURE : JwtKey.getRandomKey로 구한 Secret Key로 HS512 해시
      *
-     * @param user 유저
-     * @return jwt token
+     * @param value email
+     * @return jwtToken
      */
     public static String createAccessToken(String value) {
         Claims claims = Jwts.claims().setSubject(value); // subject
@@ -83,8 +83,8 @@ public class JwtUtils {
      * PAYLOAD : sub, iat, exp
      * SIGNATURE : JwtKey.getRandomKey로 구한 Secret Key로 HS512 해시
      *
-     * @param user 유저
-     * @return jwt token
+     * @param value email
+     * @return jwtToken
      */
     public static String createRefreshToken(String value) {
         Claims claims = Jwts.claims().setSubject(value); // subject

@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter
-public class MovieAndTvDto {
+public class VideoDto {
   private int page;
   private int total_pages;
   private int total_results;
@@ -30,7 +30,6 @@ public class MovieAndTvDto {
     private Float vote_average;
     @Setter
     private int score;
-    private Integer budget;
 
     @Getter
     public static class Genre {

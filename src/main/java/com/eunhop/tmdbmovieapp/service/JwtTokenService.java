@@ -66,11 +66,11 @@ public class JwtTokenService {
     return user.isPresent();
   }
 
-  public JwtToken updateNewAccessToken(String newAccessToken, String refreshToken) {
+  public void updateNewAccessToken(String newAccessToken, String refreshToken) {
     Optional<JwtToken> jwtToken = jwtTokenRepository.findByRefreshToken(refreshToken);
     if(jwtToken.isPresent()) {
       jwtToken.get().setAccessToken(newAccessToken);
-      return jwtTokenRepository.save(jwtToken.get());
+      jwtTokenRepository.save(jwtToken.get());
     }
     throw new RuntimeException("업데이트 오류");
   }

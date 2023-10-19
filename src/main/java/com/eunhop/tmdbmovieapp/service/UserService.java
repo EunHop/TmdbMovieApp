@@ -2,6 +2,7 @@ package com.eunhop.tmdbmovieapp.service;
 
 import com.eunhop.tmdbmovieapp.domain.Roles;
 import com.eunhop.tmdbmovieapp.domain.User;
+import com.eunhop.tmdbmovieapp.jwt.CreateCookie;
 import com.eunhop.tmdbmovieapp.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

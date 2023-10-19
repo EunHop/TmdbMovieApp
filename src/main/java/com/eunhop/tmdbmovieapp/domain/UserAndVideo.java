@@ -27,5 +27,5 @@ public class UserAndVideo extends BaseEntity {
   private String review;
 
   // review만 쓸경우 false, 관심목록 추가 버튼을 눌러야 true로 표시
-  private boolean favorite;
+  private boolean wish;
 }

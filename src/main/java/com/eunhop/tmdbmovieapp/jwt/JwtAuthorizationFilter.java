@@ -80,8 +80,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
       }
+      // DB에 refreshToken이 같은게 없으므로 쿠키를 삭제시키고 재로그인 시킨다.
+      else {
+        cookieDelete(response);
+      }
     }
     // jwtAccessToken != null & jwtRefreshToken == null
+    // RefreshToken이 없으므로 탈취된 것으로 간주, 쿠키를 삭제시키고 재로그인 시킨다.
     else if (jwtAccessToken != null) {
       jwtTokenService.deleteByAccessToken(jwtAccessToken);
       cookieDelete(response);
@@ -110,8 +115,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
   private void cookieDelete(HttpServletResponse response) {
     Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), null);
     cookie1.setMaxAge(0);
+    cookie1.setPath("/"); // 모든 경로에서 삭제됐음을 알린다.
     Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN.getDescription(), null);
     cookie2.setMaxAge(0);
+    cookie2.setPath("/");
     response.addCookie(cookie1);
     response.addCookie(cookie2);
   }

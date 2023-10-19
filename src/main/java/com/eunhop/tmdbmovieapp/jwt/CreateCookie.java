@@ -1,8 +1,7 @@
-package com.eunhop.tmdbmovieapp.service;
+package com.eunhop.tmdbmovieapp.jwt;
 
 import com.eunhop.tmdbmovieapp.domain.User;
-import com.eunhop.tmdbmovieapp.jwt.JwtProperties;
-import com.eunhop.tmdbmovieapp.jwt.JwtUtils;
+import com.eunhop.tmdbmovieapp.service.JwtTokenService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

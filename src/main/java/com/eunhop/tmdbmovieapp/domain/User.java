@@ -43,10 +43,5 @@ public class User extends BaseEntity {
   @OneToMany
   @JoinColumn(name = "user_id")
   @ToString.Exclude
-  private List<UserAndVideo> userAndVideos = new ArrayList<>();
-
-  @OneToMany
-  @JoinColumn(name = "user_id")
-  @ToString.Exclude
   private List<OAuth2> userByOAuth2 = new ArrayList<>();
 }
