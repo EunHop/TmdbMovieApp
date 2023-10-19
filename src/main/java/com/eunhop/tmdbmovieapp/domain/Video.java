@@ -19,9 +19,6 @@ public class Video extends BaseEntity {
   @Column(length = 100)
   private String title;
 
-  @Column(length = 500)
-  private String overview;
-
   private String tagline;
 
   @Column(length = 500)

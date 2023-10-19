@@ -42,18 +42,16 @@
         </li>
         <li>
           <!-- 로그인 한 사람 모두 -->
-          <a sec:authorize="isAuthenticated()" th:href="@{/}">
-          <span class="google-icon" title="Favorite">
-          <span class="desktop-header">관심목록</span>
-            favorite</span>
+          <a sec:authorize="isAuthenticated()" th:href="@{/my_wishlist/movie}">
+          <span class="google-icon" title="WishList">favorite</span>
+            <span class="desktop-header">관심목록</span>
           </a>
         </li>
         <li>
           <!-- 로그인 한 사람 모두 -->
           <a sec:authorize="isAuthenticated()" th:href="@{/}">
-          <span class="google-icon" title="Favorite">
-          <span class="desktop-header">공지사항</span>
-            info</span>
+          <span class="google-icon" title="Notice">info</span>
+            <span class="desktop-header">공지사항</span>
           </a>
         </li>
       </ul>
@@ -110,7 +108,8 @@
         <span>thffoa99@gmail.com</span>
       </div>
       <div>
-        Copyright ⓒ 2023 <a href="https://github.com/EunHop/TmdbMovieApp" target="_blank">Github_EunHop</a> All rights reserved.
+        Copyright ⓒ 2023 <a href="https://github.com/EunHop/TmdbMovieApp" target="_blank">Github_EunHop</a> All rights
+        reserved.
       </div>
     </div>
   </div>
