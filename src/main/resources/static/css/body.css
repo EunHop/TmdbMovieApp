@@ -5,12 +5,10 @@
     justify-content: center;
     flex-wrap: wrap;
 }
-a {
-    text-decoration: none;
-}
 .search_wrapper {
     padding: 9rem 3rem;
-    width: 79rem;
+    width: calc(100% - 6rem);
+    max-width: 79rem;
     background-size: cover;
     background-position: center;
 }
@@ -60,9 +58,10 @@ a {
     cursor: pointer;
 }
 .movies {
-    margin: 1rem;
+    margin: 1rem 2rem;
     padding: 1rem 0;
-    width: 83rem;
+    width: calc(100% - 4rem);
+    max-width: 85rem;
     background-color: #E9ECEF;
     border-radius: 1rem;
 }

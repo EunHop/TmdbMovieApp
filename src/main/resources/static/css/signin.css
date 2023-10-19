@@ -1,14 +1,16 @@
 .container {
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     width: 100%;
-    height: calc(100vh - 3rem);
+    height: calc(100vh - 8rem);
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url("https://image.tmdb.org/t/p/w1280/14QbnygCuTO0vl7CAFmPf1fgZfV.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .form {
-    padding-top: 2rem;
     text-align: center;
 }
 .form h2 {
@@ -72,4 +74,10 @@
     margin-top: 1rem;
     width: 16.5rem;
     height: 3.5rem;
+}
+
+@media (max-width: 650px) {
+    .container {
+        height: calc(100vh - 11rem);
+    }
 }

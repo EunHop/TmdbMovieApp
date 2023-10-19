@@ -4,9 +4,6 @@ footer {
     background-color: #303134;
     text-align: center;
 }
-a {
-    text-decoration: none;
-}
 .footer {
     display: flex;
     justify-content: center;
