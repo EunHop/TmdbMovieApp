@@ -8,7 +8,7 @@ import com.eunhop.tmdbmovieapp.oauth2.CustomOAuth2UserService;
 import com.eunhop.tmdbmovieapp.oauth2.GoogleOAuth2UserService;
 import com.eunhop.tmdbmovieapp.oauth2.OAuth2ClientRegistration;
 import com.eunhop.tmdbmovieapp.oauth2.OAuth2SuccessHandler;
-import com.eunhop.tmdbmovieapp.service.CreateCookie;
+import com.eunhop.tmdbmovieapp.jwt.CreateCookie;
 import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import com.eunhop.tmdbmovieapp.service.JwtTokenService;
 import lombok.RequiredArgsConstructor;
