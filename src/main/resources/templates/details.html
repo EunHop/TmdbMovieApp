@@ -26,10 +26,14 @@
           <div class="title_wrapper">
             <span th:if="${descriptionKR.title!=null}" class="detail_title" th:text="${descriptionKR.title}"></span>
             <span th:unless="${descriptionKR.title!=null}" class="detail_title" th:text="${descriptionKR.name}"></span>
-            <span th:if="${descriptionKR.release_date!=null}" class="year"
-                  th:text="${'('+descriptionKR.release_date.substring(0,4)+')'}"></span>
-            <span th:if="${descriptionKR.first_air_date!=null}" class="year"
-                  th:text="${'('+descriptionKR.first_air_date.substring(0,4)+')'}"></span>
+            <th:block th:if="${descriptionKR.release_date!=null}">
+              <span th:if="${descriptionKR.release_date.length()!=0}" class="year"
+                    th:text="${'('+descriptionKR.release_date.substring(0,4)+')'}"></span>
+            </th:block>
+            <th:block th:if="${descriptionKR.first_air_date!=null}">
+              <span th:if="${descriptionKR.first_air_date.length()!=0}" class="year"
+                    th:text="${'('+descriptionKR.first_air_date.substring(0,4)+')'}"></span>
+            </th:block>
           </div>
           <div class="score_and_date">
             <div class="date_and_genres">
@@ -46,29 +50,29 @@
             <div class="score_wrapper">
               <div class="tmdb_logo"></div>
               <span class="score" th:text="${descriptionKR.score+'%'}"></span>
-              <form sec:authorize="isAuthenticated()" method="post"
-                    th:action="@{/details/{media}/{id}/wish(media=${media},id=${id})}">
-                <input type="hidden" name="id" th:value="${descriptionKR.id}">
+              <form id="wish_form" sec:authorize="isAuthenticated()" onsubmit="return false">
+                <input type="hidden" id="id" name="id" th:value="${descriptionKR.id}">
                 <input type="hidden" name="title"
                        th:value="${descriptionKR.title!=null} ? ${descriptionKR.title} : ${descriptionKR.name}">
                 <input type="hidden" name="tagline"
                        th:value="${descriptionKR.tagline.length()!=0} ? ${descriptionKR.tagline} : ${descriptionEN.tagline}">
                 <input type="hidden" name="poster_path" th:value="${descriptionKR.poster_path}">
-                <input type="hidden" name="media_type" th:value="${media}">
+                <input type="hidden" id="media" name="media_type" th:value="${media}">
                 <input type="hidden" name="release_date"
                        th:value="${descriptionKR.release_date!=null} ? ${descriptionKR.release_date} : ${descriptionKR.first_air_date}">
                 <input type="hidden" name="score" th:value="${descriptionKR.score}">
+                <input type="hidden" name="wish_or_review" th:value="${true}">
                 <div th:if="${myReview!=null}">
-                  <button th:if="${myReview.wish==true}" class="wish_submit" type="submit">
+                  <button th:if="${myReview.wish==true}" class="wish_submit" type="button" onclick="wish()">
                     <span class="wish_icon_true">favorite</span>
                     <span class="wish_submit_text bottom">즐겨찾기에 제거 해보세요.</span>
                   </button>
-                  <button th:unless="${myReview.wish==true}" class="wish_submit" type="submit">
+                  <button th:unless="${myReview.wish==true}" class="wish_submit" type="button" onclick="wish()">
                     <span class="wish_icon">favorite</span>
                     <span class="wish_submit_text bottom">즐겨찾기에 추가 해보세요.</span>
                   </button>
                 </div>
-                <button th:if="${myReview==null}" class="wish_submit" type="submit">
+                <button th:if="${myReview==null}" class="wish_submit" type="button" onclick="wish()">
                   <span class="wish_icon">favorite</span>
                   <span class="wish_submit_text bottom">즐겨찾기에 추가 해보세요.</span>
                 </button>
@@ -136,9 +140,9 @@
     <div class="review_wrapper">
       <p class="review_title">한줄평</p>
       <div th:if="${myReview==null || myReview.review==null}" class="create_review_wrapper" sec:authorize="isAuthenticated()">
-        <form class="create_review" method="post" th:action="@{/details/{media}/{id}/review(media=${media},id=${id})}">
+        <form id="review_form" class="create_review" onsubmit="return false">
           <label>
-            <input type="text" class="create_input" name="review"
+            <input type="text" class="create_input" name="review" id="review_form_text"
                    th:placeholder="${descriptionKR.title!=null} ? ${descriptionKR.title}+'에 대해 한줄평이 남겨보세요.' : ${descriptionKR.name}+'에 대해 한줄평이 남겨보세요.'"
             >
             <input type="hidden" name="id" th:value="${descriptionKR.id}">
@@ -151,9 +155,10 @@
             <input type="hidden" name="release_date"
                    th:value="${descriptionKR.release_date!=null} ? ${descriptionKR.release_date} : ${descriptionKR.first_air_date}">
             <input type="hidden" name="score" th:value="${descriptionKR.score}">
+            <input type="hidden" name="wish_or_review" th:value="${false}">
           </label>
           <div class="create_review_left">
-            <button class="review_btn" type="submit">확인</button>
+            <button class="review_btn" type="button" id="review_btn">확인</button>
           </div>
         </form>
       </div>
@@ -165,18 +170,19 @@
           </div>
         </div>
         <div class="my_review">
-          <form class="update_form" method="post" th:action="@{/details/{media}/{id}/update(media=${media},id=${id})}">
+          <form id="review_update_form" class="update_form" onsubmit="return false">
             <label>
-              <input type="hidden" name="_method" value="PUT">
+              <input type="hidden" name="id" th:value="${descriptionKR.id}">
               <input type="text" name="review" class="update_text" id="update_enabled" th:value="${myReview.review}"
                      disabled>
+              <input type="hidden" name="wish_or_review" th:value="${false}">
               <div class="my_review_info">
                 <p th:text="${myReview.modifiedAt.getYear()}+'년'+${myReview.modifiedAt.getMonthValue()}+'월'+${myReview.modifiedAt.getDayOfMonth()}+'일'"></p>
                 <p th:text="${myReview.modifiedAt.getHour()}+'시'+${myReview.modifiedAt.getMinute()}+'분'"></p>
               </div>
             </label>
             <div class="move_update_btn">
-              <button class="review_btn" id="update_btn" type="submit" style="display: none">확인</button>
+              <button class="review_btn" id="update_btn" type="button" style="display: none">확인</button>
             </div>
           </form>
         </div>

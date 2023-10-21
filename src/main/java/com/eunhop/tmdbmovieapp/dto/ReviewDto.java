@@ -15,4 +15,5 @@ public class ReviewDto{
   private String media_type;
   private String release_date;
   private int score;
+  private boolean wish_or_review; // true면 wish버튼을 누르는 form태그로 간주, false면 review 글 쓰는 태그로 간주
 }

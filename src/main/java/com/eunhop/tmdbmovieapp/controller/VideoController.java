@@ -71,7 +71,7 @@ public class VideoController {
     model.addAttribute("descriptionEN", detailEN.get());
     model.addAttribute("producers", credits.get().stream().filter(producer -> producer.getOrder() == null).toList());
     model.addAttribute("actors", credits.get().stream().filter(actor -> actor.getOrder() != null).toList());
-    if(principalUser!=null) {
+    if (principalUser != null) {
       model.addAttribute("user", principalUser);
       model.addAttribute("myReview", videoService.findMyReview(id, principalUser.getUser().getId()));
       model.addAttribute("reviews", videoService.findAllReviewExceptMine(id, principalUser.getUser().getId()));
@@ -81,39 +81,34 @@ public class VideoController {
     return "details";
   }
 
-  @PostMapping("/details/{media}/{id}/review")
-  public String review(@AuthenticationPrincipal PrincipalUser principalUser,
-                       ReviewDto reviewDto, @PathVariable String media) {
-        videoService.saveReview(principalUser.getUser(), reviewDto);
-        return "redirect:/details/{media}/{id}";
-  }
-
-  @PutMapping("/details/{media}/{id}/update")
-  public String updateReview(@AuthenticationPrincipal PrincipalUser principalUser,
-                             @RequestParam String review,
-                             @PathVariable int id, @PathVariable String media) {
-    videoService.updateReview(principalUser.getUser(), id, review);
-    return "redirect:/details/{media}/{id}";
-  }
-  @PostMapping("/details/{media}/{id}/wish")
-  public String addWish(@AuthenticationPrincipal PrincipalUser principalUser,
-                        ReviewDto reviewDto,
-                        @PathVariable int id, @PathVariable String media) {
-    videoService.wishSetting(principalUser.getUser(), reviewDto);
-    return "redirect:/details/{media}/{id}";
+  @PostMapping("/details")
+  @ResponseBody
+  public String reviewAndWish(@AuthenticationPrincipal PrincipalUser principalUser,
+                              ReviewDto reviewDto
+                              ) {
+    if (reviewDto.isWish_or_review()) {
+      videoService.wishSetting(principalUser.getUser(), reviewDto);
+    } else {
+      videoService.saveReview(principalUser.getUser(), reviewDto);
+    }
+    return "success";
   }
 
   @GetMapping("/my_wishlist/{media}")
   public String myWishlist(@AuthenticationPrincipal PrincipalUser principalUser,
                            Model model, @PathVariable String media) {
     model.addAttribute("wishList", videoService.findMyWishlist(principalUser.getUser()));
+    model.addAttribute("wishListOrderByDate", videoService.findMyWishlistOrderByDate(principalUser.getUser()));
     return "my_wishlist";
   }
-  @PostMapping("/my_wishlist/{media}/wish")
+
+  @PostMapping("/my_wishlist/post")
+  @ResponseBody
   public String myWishRemove(@AuthenticationPrincipal PrincipalUser principalUser,
-                           @RequestParam int id, @PathVariable String media) {
+                             @RequestParam int id
+  ) {
     videoService.removeWish(principalUser.getUser(), id);
-    return "redirect:/my_wishlist/{media}";
+    return "success";
   }
 }
 
