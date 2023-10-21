@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -144,13 +145,6 @@ public class VideoService {
     }
   }
 
-  public void updateReview(User user, int id, String review) {
-    UserAndVideo userAndVideo = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), id);
-    userAndVideo.setReview(review);
-    userAndVideoRepository.save(userAndVideo);
-  }
-
-
   public void wishSetting(User user, ReviewDto reviewDto) {
     UserAndVideo existEntity = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), reviewDto.getId());
     if (existEntity != null) {
@@ -176,7 +170,12 @@ public class VideoService {
   }
 
   public List<UserAndVideo> findMyWishlist(User user) {
-    return userAndVideoRepository.findByUserIdAndWishOrderByModifiedAt(user.getId(), true);
+    return userAndVideoRepository.findByUserIdAndWishOrderByCreatedAt(user.getId(), true);
+  }
+
+  public List<UserAndVideo> findMyWishlistOrderByDate(User user) {
+    List<UserAndVideo> userAndVideos =  userAndVideoRepository.findByUserIdAndWishOrderByCreatedAt(user.getId(), true);
+    return userAndVideos.stream().sorted(Comparator.comparing(userAndVideo -> userAndVideo.getVideo().getRelease_date())).toList();
   }
 
   public void removeWish(User user, int id) {
@@ -184,4 +183,5 @@ public class VideoService {
     existEntity.setWish(false);
     userAndVideoRepository.save(existEntity);
   }
+
 }
