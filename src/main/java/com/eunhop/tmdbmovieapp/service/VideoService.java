@@ -101,7 +101,9 @@ public class VideoService {
   }
 
   private <T> T createResults(String uri, Class<T> elementClass) {
-    return WebClient.create()
+    return WebClient.builder()
+        .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(10*1024*1024))
+        .build()
         .get()
         .uri(uri)
         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
