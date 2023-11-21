@@ -1,7 +1,7 @@
 package com.eunhop.tmdbmovieapp.oauth2;
 
 import com.eunhop.tmdbmovieapp.domain.Roles;
-import com.eunhop.tmdbmovieapp.jwt.CreateCookie;
+import com.eunhop.tmdbmovieapp.jwt.CookieService;
 import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-  private final CreateCookie createCookie;
+  private final CookieService cookieService;
   private final CustomUserDetailsService customUserDetailsService;
 
   /**
@@ -30,7 +30,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
    */
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-    createCookie.createCookieUsingAuthentication(response, authentication);
+    cookieService.createCookieUsingAuthentication(response, authentication);
     UserDetails userDetails = customUserDetailsService.loadUserByUsername(authentication.getName());
 
     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

@@ -1,7 +1,7 @@
 header {
     background-color: #303134;
     width: 100%;
-    height: 3rem;
+    height: 5rem;
 }
 
 a {
@@ -15,16 +15,18 @@ a {
 
 .nav {
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
-    width: 85rem;
+    max-width: 85rem;
+    width: 100%;
     margin: 0 2rem;
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 .mobile_menu {
     display: none;
 }
 .nav_to_right ul {
-    line-height: 3rem;
+    line-height: 5rem;
 }
 
 .nav_to_right ul li {
@@ -33,11 +35,11 @@ a {
 }
 
 .nav_to_right ul li:nth-child(2) {
-    margin-left: 1rem;
+    margin-left: 0.7rem;
 }
 
 .nav_to_right ul li:nth-child(3) {
-    margin-left: 1rem;
+    margin-left: 0.7rem;
 }
 .nav_to_right ul li:first-child {
 }
@@ -51,15 +53,16 @@ a {
 .nav_title {
     font-weight: 700;
     font-size: 1.5em;
+    margin-left: 0.5rem;
 }
 
 .nav_to_right img {
-    width: 1.5rem;
+    width: 2rem;
 }
 
 .nav_to_left {
-    float: right;
-    flex-grow: 1;
+    margin-left: auto;
+    display: flex;
 }
 
 .nav_to_left ul li {
@@ -68,23 +71,23 @@ a {
 }
 
 .nav_to_left ul li:first-child {
-    margin-left: 1rem;
+    margin-left: 0.7rem;
 }
 
 .nav_to_left ul li:nth-child(3) {
-    margin-left: 1rem;
+    margin-left: 0.7rem;
 }
 
 .nav_to_left ul li a {
-    line-height: 3rem;
     display: inline-block;
-    height: 3rem;
     color: white;
+    line-height: 5rem;
+    height: 5rem;
 }
 
 .google-icon {
     font-family: 'Material Symbols Rounded';
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;
     transition: all 0.5s;
 }
@@ -94,18 +97,38 @@ a {
 }
 
 .desktop-header {
-    font-size: 1rem;
+    font-size: 1.1rem;
     float: left;
 }
 
+.mobile_slide {
+    display: none;
+}
+
 @media (max-width: 650px) {
-    .nav {
-        margin: 0 0.5rem;
+    header {
+        height: 5rem;
     }
-    .mobile_menu {
+    .header {
+        position: relative;
+    }
+    .nav {
+        margin: 0;
+        height: 5rem;
+        align-items: center;
+        justify-content: normal;
+    }
+    .nav_to_right {
         display: flex;
-        color: white;
-        flex-grow: 1;
+        justify-content: center;
+        position: absolute;
+        left: 25%;
+    }
+    .nav_title {
+        font-size: 2em;
+    }
+    .nav_to_right img {
+        width: 2rem;
     }
     .nav_to_right ul li:nth-child(2) {
         display: none;
@@ -113,11 +136,52 @@ a {
     .nav_to_right ul li:nth-child(3) {
         display: none;
     }
-    .desktop-header {
+    .nav_to_left {
         display: none;
     }
 
-    .nav_to_right img {
-        width: 1.2rem;
+    .google-icon {
+        font-size: 4rem;
     }
+    .desktop-header {
+        font-size: 1.5rem;
+    }
+    .mobile_menu {
+        display: flex;
+        justify-content: center;
+        color: white;
+    }
+    .mobile_slide {
+        display: block;
+        color: white;
+        position: absolute;
+        top: 5rem;
+        width: 100%;
+        height: calc(100vh - 5rem);
+        text-align: center;
+        background-color: rgba(100,99,96,0.95);
+        z-index: 1;
+        left: -100%;
+        transition: left .3s;
+    }
+    .mobile_slide.on {
+        left: 0;
+    }
+    .mobile_slide_title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin: 2rem 0;
+    }
+    .mobile_slide li {
+        margin: 0.5rem 0;
+        padding: 1rem 0;
+        border-top: 0.2rem solid #000;
+    }
+    .mobile_slide a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
 }

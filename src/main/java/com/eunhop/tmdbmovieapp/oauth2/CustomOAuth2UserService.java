@@ -31,10 +31,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       String resEmail = attributesResponse.get("email").toString();
       String resName = attributesResponse.get("name").toString();
 
-      oAuth2Service.userAndOAuth2DBSave(resEmail, resName, provider);
-
       return new PrincipalUser(
-          oAuth2Service.findUser(resEmail),
+          oAuth2Service.userAndOAuth2DBSave(resEmail, resName, provider),
           attributesResponse
       );
     } else {
@@ -43,10 +41,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       String resNickname = profileResponse.get("nickname").toString();
       String resEmail = attributesResponse.get("email").toString();
 
-      oAuth2Service.userAndOAuth2DBSave(resEmail, resNickname, provider);
-
       return new PrincipalUser(
-          oAuth2Service.findUser(resEmail),
+          oAuth2Service.userAndOAuth2DBSave(resEmail, resNickname, provider),
           attributesResponse
       );
     }

@@ -51,13 +51,13 @@
     background: #F8D7DA;
     font-weight: 500;
 }
-.form .form-wrapper button {
+.form-wrapper button {
     color: #fff;
     border-radius: 0.5rem;
     width: 16rem;
-    height: 2rem;
+    height: 2.5rem;
     border: 0;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     margin-bottom: 0.5rem;
     background: #0d63fd;
     font-size: 1rem;

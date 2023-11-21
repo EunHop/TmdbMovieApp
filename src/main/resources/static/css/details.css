@@ -273,7 +273,7 @@ a {
     border-style: none;
     cursor: pointer;
     margin-left: 0.5rem;
-    background-color: #F0F0F0;
+    background-color: #bfbfbf;
 }
 
 .create_review_wrapper {
@@ -453,6 +453,10 @@ a {
         color: #000000;
     }
 
+    .wish_icon_true {
+        color: #000000;
+    }
+
     .date_and_genres {
         margin-top: 0.5rem;
         display: block;
@@ -503,6 +507,9 @@ a {
     }
 
     .review_btn {
-        margin: 0.5rem 0 0 0.5rem;
+        margin: 0.5rem 0 0 0;
+        width: 9rem;
+        font-size: 1.2rem;
+        font-weight: 700;
     }
 }

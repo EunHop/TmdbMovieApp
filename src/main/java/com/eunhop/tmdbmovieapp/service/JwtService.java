@@ -1,6 +1,6 @@
 package com.eunhop.tmdbmovieapp.service;
 
-import com.eunhop.tmdbmovieapp.domain.JwtToken;
+import com.eunhop.tmdbmovieapp.domain.Jwt;
 import com.eunhop.tmdbmovieapp.domain.User;
 import com.eunhop.tmdbmovieapp.repository.JwtTokenRepository;
 import com.eunhop.tmdbmovieapp.repository.UserRepository;
@@ -13,45 +13,45 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class JwtTokenService {
+public class JwtService {
   private final JwtTokenRepository jwtTokenRepository;
   private final UserRepository userRepository;
 
   public void newToken(String accessToken,String refreshToken, String email) {
-    JwtToken jwtToken = JwtToken.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+    Jwt jwt = Jwt.builder().accessToken(accessToken).refreshToken(refreshToken).build();
     Optional<User> user = userRepository.findByEmail(email);
     if(user.isPresent()) {
-      jwtToken.setUser(user.get());
-      jwtTokenRepository.save(jwtToken);
+      jwt.setUser(user.get());
+      jwtTokenRepository.save(jwt);
     }
   }
 
-  public JwtToken findByAccessToken(String accessToken) {
+  public Optional<Jwt> findByAccessToken(String accessToken) {
     return jwtTokenRepository.findByAccessToken(accessToken);
   }
 
-  public Optional<JwtToken> findByRefreshToken(String refreshToken) {
+  public Optional<Jwt> findByRefreshToken(String refreshToken) {
     return jwtTokenRepository.findByRefreshToken(refreshToken);
   }
 
   public void deleteByRefreshToken(String refreshToken) {
-    Optional<JwtToken> jwtToken = jwtTokenRepository.findByRefreshToken(refreshToken);
-    if(jwtToken.isPresent()) {
-      jwtTokenRepository.delete(jwtToken.get());
+    Optional<Jwt> jwt = jwtTokenRepository.findByRefreshToken(refreshToken);
+    if(jwt.isPresent()) {
+      jwtTokenRepository.delete(jwt.get());
     }
   }
 
   public void deleteByAccessToken(String accessToken) {
-    JwtToken jwtToken = jwtTokenRepository.findByAccessToken(accessToken);
-    if(jwtToken != null) {
-      jwtTokenRepository.delete(jwtToken);
+    Optional<Jwt> jwt = jwtTokenRepository.findByAccessToken(accessToken);
+    if(jwt.isPresent()) {
+      jwtTokenRepository.delete(jwt.get());
     }
   }
 
   public boolean dataAlreadyExist(String email) {
     Optional<User> user = userRepository.findByEmail(email);
     if(user.isPresent()) {
-      Optional<JwtToken> jwtToken = jwtTokenRepository.findByUserId(user.get().getId());
+      Optional<Jwt> jwtToken = jwtTokenRepository.findByUserId(user.get().getId());
       if(jwtToken.isPresent()) {
         jwtTokenRepository.delete(jwtToken.get());
         return true;
@@ -67,7 +67,7 @@ public class JwtTokenService {
   }
 
   public void updateNewAccessToken(String newAccessToken, String refreshToken) {
-    Optional<JwtToken> jwtToken = jwtTokenRepository.findByRefreshToken(refreshToken);
+    Optional<Jwt> jwtToken = jwtTokenRepository.findByRefreshToken(refreshToken);
     if(jwtToken.isPresent()) {
       jwtToken.get().setAccessToken(newAccessToken);
       jwtTokenRepository.save(jwtToken.get());

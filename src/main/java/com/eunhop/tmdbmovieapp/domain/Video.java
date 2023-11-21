@@ -1,6 +1,7 @@
 package com.eunhop.tmdbmovieapp.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -16,6 +17,7 @@ public class Video extends BaseEntity {
   @Id
   private int id;
 
+  @NotNull
   @Column(length = 100)
   private String title;
 
@@ -24,6 +26,7 @@ public class Video extends BaseEntity {
   @Column(length = 500)
   private String poster_path;
 
+  @NotNull
   private String media_type;
 
   @Column(length = 100)

@@ -25,6 +25,7 @@ public class OAuth2 extends BaseEntity {
   @Column(length = 100)
   private String name;
 
+  @NotNull
   @Column(length = 100)
   private String provider;
 

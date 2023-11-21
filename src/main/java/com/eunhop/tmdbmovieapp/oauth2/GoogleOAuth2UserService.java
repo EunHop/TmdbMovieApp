@@ -27,10 +27,8 @@ public class GoogleOAuth2UserService implements OAuth2UserService<OidcUserReques
     String resName = oidcUser.getAttributes().get("name").toString();
     String resEmail = oidcUser.getAttributes().get("email").toString();
 
-    oAuth2Service.userAndOAuth2DBSave(resEmail, resName, provider);
-
     return new PrincipalUser(
-        oAuth2Service.findUser(resEmail),
+        oAuth2Service.userAndOAuth2DBSave(resEmail, resName, provider),
         oidcUser.getAttributes()
     );
   }

@@ -22,7 +22,7 @@ public class OAuth2Service {
   private final OAuth2Repository oAuth2Repository;
   private final PasswordEncoder passwordEncoder;
 
-  public void userAndOAuth2DBSave(
+  public User userAndOAuth2DBSave(
       String resEmail,
       String resName,
       String provider
@@ -36,9 +36,11 @@ public class OAuth2Service {
     if (existOauth2.isPresent()) {
       existOauth2.get().setName(resName);
       oAuth2Repository.save(existOauth2.get());
+      return existOauth2.get().getUser();
     } else if (user.isPresent()) {
       oauth2.setUser(user.get());
       oAuth2Repository.save(oauth2);
+      return user.get();
     } else {
       User newUser = User.builder()
           .name(resName)
@@ -50,14 +52,8 @@ public class OAuth2Service {
       userRepository.save(newUser);
       oauth2.setUser(newUser);
       oAuth2Repository.save(oauth2);
+      return newUser;
     }
   }
 
-  public User findUser(String email) {
-    Optional<User> findUser = userRepository.findByEmail(email);
-    if(findUser.isPresent()) {
-      return findUser.get();
-    }
-    return null;
-  }
 }

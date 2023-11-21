@@ -2,7 +2,7 @@ package com.eunhop.tmdbmovieapp.service;
 
 import com.eunhop.tmdbmovieapp.domain.Roles;
 import com.eunhop.tmdbmovieapp.domain.User;
-import com.eunhop.tmdbmovieapp.jwt.CreateCookie;
+import com.eunhop.tmdbmovieapp.jwt.CookieService;
 import com.eunhop.tmdbmovieapp.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-  private final CreateCookie createCookie;
+  private final CookieService cookieService;
 
   public void registration(User user) {
      userRepository.save(
@@ -39,7 +39,7 @@ public class UserService {
   }
 
   public void login(HttpServletResponse response, User user) {
-    createCookie.createCookieUsingUser(response, user);
+    cookieService.createCookieUsingUser(response, user);
 
     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
         user.getEmail(),

@@ -8,9 +8,9 @@ import com.eunhop.tmdbmovieapp.oauth2.CustomOAuth2UserService;
 import com.eunhop.tmdbmovieapp.oauth2.GoogleOAuth2UserService;
 import com.eunhop.tmdbmovieapp.oauth2.OAuth2ClientRegistration;
 import com.eunhop.tmdbmovieapp.oauth2.OAuth2SuccessHandler;
-import com.eunhop.tmdbmovieapp.jwt.CreateCookie;
+import com.eunhop.tmdbmovieapp.jwt.CookieService;
 import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
-import com.eunhop.tmdbmovieapp.service.JwtTokenService;
+import com.eunhop.tmdbmovieapp.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -40,8 +40,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final JwtTokenService jwtTokenService;
-  private final CreateCookie createCookie;
+  private final JwtService jwtService;
+  private final CookieService cookieService;
   private final OAuth2ClientRegistration oAuth2ClientRegistration;
   private final CustomUserDetailsService customUserDetailsService;
 
@@ -66,13 +66,8 @@ public class SecurityConfig {
     // authorization
     http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
             .requestMatchers("/", "/signup", "/login").permitAll()
-            .requestMatchers(HttpMethod.GET, "/movie").permitAll()
-            .requestMatchers(HttpMethod.HEAD, "/movie").permitAll()
+            .requestMatchers("/my_wishlist").authenticated()
             .requestMatchers(HttpMethod.GET, "/notice").permitAll()
-            .requestMatchers(HttpMethod.HEAD, "/notice").permitAll()
-            .requestMatchers(HttpMethod.POST, "/movie").authenticated()
-            .requestMatchers(HttpMethod.POST, "/movie/detail").authenticated()
-            .requestMatchers(HttpMethod.DELETE, "/movie/detail").authenticated()
             .requestMatchers(HttpMethod.POST, "/notice").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.DELETE, "/notice").hasRole(Roles.ADMIN.name())
             .anyRequest().permitAll() // 나중에 .authticated() 로 바꾸기
@@ -86,7 +81,7 @@ public class SecurityConfig {
         .oauth2Login(oauth2 -> oauth2
             .loginPage("/login")
             .defaultSuccessUrl("/")
-            .successHandler(new OAuth2SuccessHandler(createCookie, customUserDetailsService))
+            .successHandler(new OAuth2SuccessHandler(cookieService, customUserDetailsService))
             .clientRegistrationRepository(clientRegistrationRepository())
             .authorizedClientService(authorizedClientService())
             .userInfoEndpoint(user -> user
@@ -135,8 +130,8 @@ public class SecurityConfig {
     public void configure(HttpSecurity http) {
       AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
       http
-          .addFilterBefore(new JwtAuthenticationFilter(authenticationManager, createCookie, customUserDetailsService), UsernamePasswordAuthenticationFilter.class)
-          .addFilterBefore(new JwtAuthorizationFilter(customUserDetailsService, jwtTokenService), BasicAuthenticationFilter.class);
+          .addFilterBefore(new JwtAuthenticationFilter(authenticationManager, cookieService, customUserDetailsService), UsernamePasswordAuthenticationFilter.class)
+          .addFilterBefore(new JwtAuthorizationFilter(customUserDetailsService, cookieService, jwtService), BasicAuthenticationFilter.class);
     }
   }
 }

@@ -1,9 +1,9 @@
 package com.eunhop.tmdbmovieapp.jwt;
 
-import com.eunhop.tmdbmovieapp.domain.JwtToken;
+import com.eunhop.tmdbmovieapp.domain.Jwt;
 import com.eunhop.tmdbmovieapp.domain.Roles;
 import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
-import com.eunhop.tmdbmovieapp.service.JwtTokenService;
+import com.eunhop.tmdbmovieapp.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -20,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -29,12 +28,15 @@ import java.util.Optional;
 @Slf4j
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-  private final JwtTokenService jwtTokenService;
   private final CustomUserDetailsService customUserDetailsService;
+  private final CookieService cookieService;
+  private final JwtService jwtService;
 
-  public JwtAuthorizationFilter(CustomUserDetailsService customUserDetailsService, JwtTokenService jwtTokenService) {
+
+  public JwtAuthorizationFilter(CustomUserDetailsService customUserDetailsService, CookieService cookieService, JwtService jwtService) {
     this.customUserDetailsService = customUserDetailsService;
-    this.jwtTokenService = jwtTokenService;
+    this.cookieService = cookieService;
+    this.jwtService = jwtService;
   }
 
   protected void doFilterInternal(
@@ -43,83 +45,73 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
       FilterChain chain
   ) throws IOException, ServletException {
       // cookie 에서 JWT token을 가져옵니다.
-    String jwtAccessToken = null;
-    String jwtRefreshToken = null;
+    String accessToken = null;
+    String refreshToken = null;
     try {
-      jwtAccessToken = Arrays.stream(request.getCookies())
+      accessToken = Arrays.stream(request.getCookies())
           .filter(cookie -> cookie.getName().equals(JwtProperties.ACCESS_TOKEN.getDescription())).findFirst()
           .map(Cookie::getValue)
           .orElse(null);
-      jwtRefreshToken = Arrays.stream(request.getCookies())
+      refreshToken = Arrays.stream(request.getCookies())
           .filter(cookie -> cookie.getName().equals(JwtProperties.REFRESH_TOKEN.getDescription())).findFirst()
           .map(Cookie::getValue)
           .orElse(null);
     } catch (Exception ignored) {}
-    if (jwtAccessToken != null & jwtRefreshToken != null) {
-      if (jwtRefreshToken.equals(jwtTokenService.findByAccessToken(jwtAccessToken).getRefreshToken())) {
-        Authentication authentication = getUsernamePasswordAuthenticationToken(jwtAccessToken, jwtRefreshToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    if (accessToken != null & refreshToken != null) {
+      Optional<Jwt> access =jwtService.findByAccessToken(accessToken);
+      if(access.isPresent()) {
+        if (refreshToken.equals(access.get().getRefreshToken())) {
+          Authentication authentication = getUsernamePasswordAuthenticationToken(accessToken);
+          SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        // DB에 accessToken이 같은게 없으므로 쿠키를 삭제시키고 재로그인 시킨다.
+      } else {
+        cookieService.deleteCookie(response);
       }
-    } else if (jwtAccessToken == null & jwtRefreshToken != null) {
-      Optional<JwtToken> refresh = jwtTokenService.findByRefreshToken(jwtRefreshToken);
+    } else if (accessToken == null & refreshToken != null) {
+      Optional<Jwt> refresh = jwtService.findByRefreshToken(refreshToken);
       if(refresh.isPresent()) {
         if (JwtUtils.accessTokenNotExpired(refresh.get().getAccessToken())) {
-          jwtTokenService.deleteByRefreshToken(jwtRefreshToken);
-          cookieDelete(response);
+          jwtService.deleteByRefreshToken(refreshToken);
+          cookieService.deleteCookie(response);
         }
         else {
-          String newJwtAccessToken = JwtUtils.createAccessToken(refresh.get().getUser().getEmail());
-          jwtTokenService.updateNewAccessToken(newJwtAccessToken, jwtRefreshToken);
-          Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), newJwtAccessToken);
+          String newAccessToken = JwtUtils.createAccessToken(refresh.get().getUser().getEmail());
+          jwtService.updateNewAccessToken(newAccessToken, refreshToken);
+          Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), newAccessToken);
           cookie1.setMaxAge(JwtProperties.ACCESS_TOKEN.getTime()); // 쿠키의 만료시간 설정
           cookie1.setSecure(true);
           cookie1.setHttpOnly(true);
           cookie1.setPath("/");
           response.addCookie(cookie1);
-          Authentication authentication = getUsernamePasswordAuthenticationToken(newJwtAccessToken, jwtRefreshToken);
+          Authentication authentication = getUsernamePasswordAuthenticationToken(newAccessToken);
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
       }
       // DB에 refreshToken이 같은게 없으므로 쿠키를 삭제시키고 재로그인 시킨다.
       else {
-        cookieDelete(response);
+        cookieService.deleteCookie(response);
       }
     }
-    // jwtAccessToken != null & jwtRefreshToken == null
+    // accessToken != null & refreshToken == null
     // RefreshToken이 없으므로 탈취된 것으로 간주, 쿠키를 삭제시키고 재로그인 시킨다.
-    else if (jwtAccessToken != null) {
-      jwtTokenService.deleteByAccessToken(jwtAccessToken);
-      cookieDelete(response);
+    else if (accessToken != null) {
+      jwtService.deleteByAccessToken(accessToken);
+      cookieService.deleteCookie(response);
     }
     chain.doFilter(request, response);
   }
 
   /**
    * JWT 토큰으로 User를 찾아서 UsernamePasswordAuthenticationToken를 만들어서 반환한다.
-   * User가 없다면 null
    */
-  private Authentication getUsernamePasswordAuthenticationToken(String accessToken, String refreshToken) {
-    String email1 = JwtUtils.getUserEmail(accessToken);
-    String email2 = JwtUtils.getUserEmail(refreshToken);
-    if (email1 != null & email2 != null & Objects.equals(email1, email2)) {
-      UserDetails userDetails = customUserDetailsService.loadUserByUsername(email1);
+  private Authentication getUsernamePasswordAuthenticationToken(String accessToken) {
+    String email = JwtUtils.getUserEmail(accessToken);
+      UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(
             userDetails, // principal
             userDetails.getPassword(),
             List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
         );
-    }
-    return null; // 유저가 없으면 NULL
-  }
-
-  private void cookieDelete(HttpServletResponse response) {
-    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), null);
-    cookie1.setMaxAge(0);
-    cookie1.setPath("/"); // 모든 경로에서 삭제됐음을 알린다.
-    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN.getDescription(), null);
-    cookie2.setMaxAge(0);
-    cookie2.setPath("/");
-    response.addCookie(cookie1);
-    response.addCookie(cookie2);
   }
 }

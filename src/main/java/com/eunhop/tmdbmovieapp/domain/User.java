@@ -21,9 +21,11 @@ public class User extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  // @Column(nullable = false)은  엔티티의 필드 값이 null로 채워진 상태에서도 정상적으로 수행되다가
+  // 데이터베이스 쪽으로 SQL 쿼리가 도착한 순간에 예외가 발생하고
+  // @NotNull은 엔티티의 필드 값이 null로 채워지는 순간 예외가 발생하므로
+  // @NotNull이 더 전 단계에서 예외 발생 시키므로 훨씬 더 안전하다. 2023/09/28
   @NotNull
-  // @Column(nullable = false)은  엔티티의 필드 값이 null로 채워진 상태에서도 정상적으로 수행되다가 데이터베이스 쪽으로 SQL 쿼리가 도착한 순간에 예외가 발생하고
-  // @NotNull은 엔티티의 필드 값이 null로 채워지는 순간 예외가 발생하므로 @NotNull이 더 전단계에서 예외 발생시키므로 훨씬 더 안전하다. 2023/09/28
   @Column(length = 100)
   private String email;
 
@@ -35,9 +37,11 @@ public class User extends BaseEntity {
   @Column(length = 100)
   private String name;
 
-  @Enumerated(EnumType.STRING) @NotNull
+  @NotNull
+  @Enumerated(EnumType.STRING)
   private Roles role;
 
+  @NotNull
   private boolean enabled;
 
   @OneToMany

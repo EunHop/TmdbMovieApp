@@ -30,7 +30,7 @@
 <div class="header" th:fragment="nav">
   <div class="nav">
     <div class="mobile_menu">
-      <span class="google-icon" title="menu">menu</span>
+      <span id="menu" class="google-icon" title="menu">menu</span>
     </div>
     <div class="nav_to_right">
       <ul>
@@ -43,14 +43,14 @@
         <li>
           <!-- 로그인 한 사람 모두 -->
           <a sec:authorize="isAuthenticated()" th:href="@{/my_wishlist/movie}">
-          <span class="google-icon" title="WishList">favorite</span>
+            <span class="google-icon" title="WishList">favorite</span>
             <span class="desktop-header">관심목록</span>
           </a>
         </li>
         <li>
           <!-- 로그인 한 사람 모두 -->
           <a sec:authorize="isAuthenticated()" th:href="@{/}">
-          <span class="google-icon" title="Notice">info</span>
+            <span class="google-icon" title="Notice">info</span>
             <span class="desktop-header">공지사항</span>
           </a>
         </li>
@@ -92,6 +92,55 @@
         </li>
       </ul>
     </div>
+  </div>
+  <div class="mobile_slide" id="mobile_slide">
+    <div class="mobile_slide_title">
+      슬라이드
+    </div>
+    <ul>
+      <li>
+        <!-- 로그인 한 사람 모두 -->
+        <a th:href="@{/my_wishlist/movie}">
+          <span class="google-icon" title="WishList">favorite</span>
+          <span class="desktop-header">관심목록</span>
+        </a>
+      </li>
+      <li>
+        <!-- 로그인 한 사람 모두 -->
+        <a th:href="@{/}">
+          <span class="google-icon" title="Notice">info</span>
+          <span class="desktop-header">공지사항</span>
+        </a>
+      </li>
+      <li sec:authorize="!isAuthenticated()">
+        <!-- 로그인 안한 사람만 -->
+        <a th:href="@{/login}">
+          <span class="google-icon" title="Login">login</span>
+          <span class="desktop-header">로그인</span>
+        </a>
+      </li>
+      <li sec:authorize="!isAuthenticated()">
+        <!-- 로그인 안한 사람만 -->
+        <a th:href="@{/signup}">
+          <span class="google-icon" title="Sign Up">person_add</span>
+          <span class="desktop-header">회원가입</span>
+        </a>
+      </li>
+      <li sec:authorize="isAuthenticated()">
+        <!-- 로그인한 사람만 -->
+        <a th:href="@{/}">
+          <span class="google-icon" title="My info">account_circle</span>
+          <span class="desktop-header">내정보</span>
+        </a>
+      </li>
+      <li sec:authorize="isAuthenticated()">
+        <!-- 로그인한 사람만 -->
+        <a th:href="@{/logout}">
+          <span class="google-icon" title="Logout">logout</span>
+          <span class="desktop-header">로그아웃</span>
+        </a>
+      </li>
+    </ul>
   </div>
 </div>
 <div class="footer" th:fragment="footer">

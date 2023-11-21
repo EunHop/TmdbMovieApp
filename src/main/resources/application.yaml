@@ -46,10 +46,8 @@ spring:
       detection-strategy: default
   profiles:
     include: API-KEY
-  mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
+  codec:
+    max-in-memory-size: 10MB
 
 # Spring Actuator ??
 management:

@@ -165,6 +165,7 @@
 @media (max-width: 650px) {
     .search_wrapper {
         padding: 3rem 1rem;
+        width: 100%;
     }
     .search_title h2 {
         font-size: 2.5rem;
@@ -180,6 +181,10 @@
     }
     .column {
         font-size: 1.5rem;
+    }
+    .movies {
+        width: calc(100% - 0.5rem);
+        margin: 1rem 0.5rem;
     }
     .movie {
         width: 6rem;

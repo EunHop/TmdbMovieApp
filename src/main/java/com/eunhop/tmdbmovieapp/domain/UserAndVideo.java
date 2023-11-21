@@ -19,7 +19,6 @@ public class UserAndVideo extends BaseEntity {
   @ManyToOne
   private User user;
 
-  // UserAndMovie.getMovie()는 많지만 Movie.getUserAndMovie()는 없을것 같아 단방향 관계로 지었다. 2023/09/28
   @ManyToOne
   private Video video;
 

@@ -1,14 +1,12 @@
 package com.eunhop.tmdbmovieapp.repository;
 
-import com.eunhop.tmdbmovieapp.domain.JwtToken;
-import com.eunhop.tmdbmovieapp.domain.User;
+import com.eunhop.tmdbmovieapp.domain.Jwt;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface JwtTokenRepository extends JpaRepository<JwtToken, Long> {
-  JwtToken findByAccessToken(String accessToken);
-  Optional<JwtToken> findByRefreshToken(String refreshToken);
-  Optional<JwtToken> findByUserId(Long id);
+public interface JwtTokenRepository extends JpaRepository<Jwt, Long> {
+  Optional<Jwt> findByAccessToken(String accessToken);
+  Optional<Jwt> findByRefreshToken(String refreshToken);
+  Optional<Jwt> findByUserId(Long id);
 }

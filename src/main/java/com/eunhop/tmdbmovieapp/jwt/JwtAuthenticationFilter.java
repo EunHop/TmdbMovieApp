@@ -26,13 +26,13 @@ import java.util.List;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
   private final AuthenticationManager authenticationManager;
-  private final CreateCookie createCookie;
+  private final CookieService cookieService;
   private final CustomUserDetailsService customUserDetailsService;
 
-  public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CreateCookie createCookie, CustomUserDetailsService customUserDetailsService) {
+  public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CookieService cookieService, CustomUserDetailsService customUserDetailsService) {
     super(authenticationManager);
     this.authenticationManager = authenticationManager;
-    this.createCookie = createCookie;
+    this.cookieService = cookieService;
     this.customUserDetailsService = customUserDetailsService;
   }
 
@@ -45,12 +45,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   ) throws AuthenticationException {
     // 로그인할 때 입력한 username과 password를 가지고 authenticationToken를 생성한다.
     UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getParameter("email"));
-    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-        userDetails,
-        request.getParameter("password"),
-        List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
-    );
-    return authenticationManager.authenticate(authenticationToken);
+      UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+          userDetails,
+          request.getParameter("password"),
+          List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
+      );
+      return authenticationManager.authenticate(authenticationToken);
   }
 
 
@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       FilterChain chain,
       Authentication authResult
   ) throws IOException {
-    createCookie.createCookieUsingAuthentication(response, authResult);
+    cookieService.createCookieUsingAuthentication(response, authResult);
 
     response.sendRedirect("/");
   }

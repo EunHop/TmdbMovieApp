@@ -46,8 +46,10 @@
               </a>
               <div class="wish_score_wrapper">
                 <span th:text="${wish.video.release_date}"></span>
-                <img class="wish_tmdb_logo" src="/images/tmdb_logo.png" alt="tmdb_logo">
-                <span class="wish_score" th:text="${wish.video.score}+'%'"></span>
+                <div class="my_score_wrapper">
+                  <img class="wish_tmdb_logo" src="/images/tmdb_logo.png" alt="tmdb_logo">
+                  <span class="wish_score" th:text="${wish.video.score}+'%'"></span>
+                </div>
               </div>
               <p class="wish_tagline" th:text="${wish.video.tagline}"></p>
               <form th:id="'wish_form'+${wishStat.index}" onsubmit="return false">
