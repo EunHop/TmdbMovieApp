@@ -13,11 +13,22 @@ ajax가 어떤식으로 돌아가는지 찾아보는데까지 하루에 반을 �
 
 ajax는 
 
-$.ajax({ url: 'url', method: 'method'(type과 동일한거 같다), data : $('form id값').serialize(), success: function(){location.replace(url)} }) 
+    $.ajax({
+        url: 'url', 
+        method: 'method'(type과 동일한거 같다), 
+        data : $('form id값').serialize(), 
+        success: function(){
+            location.replace(url)
+        } 
+    }) 
 
 기본 이런식으로 생겼고 
 
-data를 넘겨줄 때 $('form id값').serialize() 라는 form태그 안에 name이 붙은 태그들을 하나로 묶어서 보낼 수 있었고 하나로 묶은걸 컨트롤러에서 객체로 받을 수 있었다. 
+data를 넘겨줄 때 
+
+    $('form id값').serialize()
+
+라는 form태그 안에 name이 붙은 태그들을 하나로 묶어서 보낼 수 있었고 하나로 묶은걸 컨트롤러에서 객체로 받을 수 있었다. 
 
 그리고 form 태그들이 자바스크립트를 거치지않고 submit되서 컨트롤러로 넘어가면 안되기 떄문에 
 
@@ -25,7 +36,7 @@ form 태그에 onsubmit="return false"를 달아 줬고(이걸 안달아주면 G
 
 button태그에 type=submit을 type=button으로 바꾸고 id값을 주거나 onclick을 활용해서 자바스크립트로 넘겨 ajax를 타게 구현했다. 
 
-form 태그에 onsubmit="return false"를 줬기 때문에 input type=text에 active 된 상태로 엔터를 눌러도 submit이 안됐고 엔터키 눌러서 ajax post를 날리기 위해서 자바스크립트에 해당 코드 추가해줬다.
+엔터키 눌러서 ajax post를 날리기 위해서 자바스크립트에 해당 코드 추가해줬다.
 
 ---
 
@@ -44,4 +55,6 @@ PrincipalUser에 권한이 잘 매칭이 안되어 있었다.
 
 공지사항 페이지를 완료했다. 
 
-어드민 권한으로 수정, 삭제, 추가, 삭제된 공지사항 확인이 가능하고 유저나 anonymous권한으로는 공지사항 보는 것만 가능하다.
+어드민 권한으로 수정, 삭제, 추가, 삭제된 공지사항 확인이 가능하고 
+
+유저나 anonymous권한으로는 공지사항 보는 것만 가능하다.
