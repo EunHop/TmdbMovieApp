@@ -1,7 +1,6 @@
 package com.eunhop.tmdbmovieapp.jwt;
 
 import com.eunhop.tmdbmovieapp.domain.Jwt;
-import com.eunhop.tmdbmovieapp.domain.Roles;
 import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import com.eunhop.tmdbmovieapp.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -12,14 +11,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -111,7 +108,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         return new UsernamePasswordAuthenticationToken(
             userDetails, // principal
             userDetails.getPassword(),
-            List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
+            userDetails.getAuthorities()
         );
   }
 }

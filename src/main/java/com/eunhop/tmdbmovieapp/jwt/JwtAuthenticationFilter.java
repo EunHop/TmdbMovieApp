@@ -1,6 +1,5 @@
 package com.eunhop.tmdbmovieapp.jwt;
 
-import com.eunhop.tmdbmovieapp.domain.Roles;
 import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -17,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 /**
  * JWT를 이용한 로그인 인증
@@ -48,7 +45,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
           userDetails,
           request.getParameter("password"),
-          List.of(new SimpleGrantedAuthority(Roles.USER.getValue()))
+          userDetails.getAuthorities()
       );
       return authenticationManager.authenticate(authenticationToken);
   }

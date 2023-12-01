@@ -1,6 +1,5 @@
 package com.eunhop.tmdbmovieapp.dto.security;
 
-import com.eunhop.tmdbmovieapp.domain.Roles;
 import com.eunhop.tmdbmovieapp.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +38,7 @@ public class PrincipalUser implements UserDetails, OidcUser {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     Collection<GrantedAuthority> collect = new ArrayList<>();
-    collect.add(new SimpleGrantedAuthority(Roles.USER.getValue()));
+    collect.add(new SimpleGrantedAuthority(user.getRole().getValue()));
     return collect;
   }
 
