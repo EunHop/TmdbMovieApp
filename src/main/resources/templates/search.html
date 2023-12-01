@@ -61,7 +61,7 @@
     </div>
     <div th:if="${param.query !=null}" class="page-wrapper">
       <a class="previous" th:if="${(searchList.page - 1)/10 >= 1}"
-         th:href="@{/search/{media}(media=${media},query=${param.query},page=${((searchList.page - 1)/10)*10 - 9})}">
+         th:href="@{/search/{media}(media=${media},query=${param.query},page=${((searchList.page - 1)/10)*10})}">
         <span class="page-icon">arrow_back</span>이전
       </a>
       <div th:if="${searchList.total_pages>=10}" th:each="number : ${#numbers.sequence(1,(searchList.total_pages/10))}">

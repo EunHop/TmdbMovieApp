@@ -377,6 +377,7 @@ a {
     margin: 0.5rem;
     border-radius: 0.5rem;
     background-color: #fff;
+    padding: 0.3rem 0;
 }
 
 .review_text {
@@ -495,7 +496,7 @@ a {
 
     .review_wrapper {
         width: 100%;
-        margin: 0.5rem 0;
+        margin: 0.5rem;
     }
 
     .create_review_left {
