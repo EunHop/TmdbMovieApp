@@ -11,7 +11,11 @@ Postmapping 리턴에 redirect 쓸때 이전 페이지와 같은 페이지로 �
 
 ajax가 어떤식으로 돌아가는지 찾아보는데까지 하루에 반을 쓴거 같다;;
 
-ajax는 $.ajax({ url: 'url', method: 'method'(type과 동일한거 같다), data : $('form id값').serialize(), success: function(){location.replace(url)} }) 기본 이런식으로 생겼고 
+ajax는 
+
+$.ajax({ url: 'url', method: 'method'(type과 동일한거 같다), data : $('form id값').serialize(), success: function(){location.replace(url)} }) 
+
+기본 이런식으로 생겼고 
 
 data를 넘겨줄 때 $('form id값').serialize() 라는 form태그 안에 name이 붙은 태그들을 하나로 묶어서 보낼 수 있었고 하나로 묶은걸 컨트롤러에서 객체로 받을 수 있었다. 
 
