@@ -57,4 +57,15 @@ public class UserService {
     return userRepository.findByEmail(email);
   }
 
+  public void authorityChange(long userId) {
+    Optional<User> user = userRepository.findById(userId);
+    if(user.get().getRole() == Roles.USER) {
+      user.get().setRole(Roles.USER_WITHOUT_WRITE);
+      userRepository.save(user.get());
+    } else {
+      user.get().setRole(Roles.USER);
+      userRepository.save(user.get());
+    }
+  }
+
 }

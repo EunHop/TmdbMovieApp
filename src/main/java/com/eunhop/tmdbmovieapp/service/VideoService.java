@@ -10,6 +10,10 @@ import com.eunhop.tmdbmovieapp.repository.UserAndVideoRepository;
 import com.eunhop.tmdbmovieapp.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -186,4 +191,23 @@ public class VideoService {
     userAndVideoRepository.save(existEntity);
   }
 
+  public Page<UserAndVideo> findAnyReviews(int pageNo, String sort) {
+    Pageable pageable = PageRequest.of(pageNo, 8, Sort.by(Sort.Direction.DESC, sort));
+    return userAndVideoRepository.findAll(pageable);
+  }
+
+  public void reviewDelete(long id) {
+    Optional<UserAndVideo> find = userAndVideoRepository.findById(id);
+    userAndVideoRepository.delete(find.get());
+  }
+
+  public Page<UserAndVideo> findUserReviews(long id, int pageNo, String sort) {
+    Pageable pageable = PageRequest.of(pageNo, 8, Sort.by(Sort.Direction.DESC, sort));
+    return userAndVideoRepository.findByUserId(id, pageable);
+  }
+
+  public void userReviewsDeleteAll(long userId) {
+    List<UserAndVideo> userReviews = userAndVideoRepository.findByUserId(userId);
+    userAndVideoRepository.deleteAll(userReviews);
+  }
 }

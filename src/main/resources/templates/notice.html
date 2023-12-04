@@ -87,9 +87,11 @@
          th:href="@{/notice(pageNo=${(noticeList.getNumber/10)*10 -1})}">
         <span class="page-icon">arrow_back</span>이전
       </a>
+      <!--      1 ~ 마지막 페이지 번호의 10의 자리까지 -->
       <th:block th:if="${noticeList.getTotalPages()>=10}"
                 th:each="tenPages : ${#numbers.sequence(1,noticeList.getTotalPages()/10)}">
         <div th:if="${noticeList.getNumber()/10+1==tenPagesStat.current}">
+          <!--          이전 번호들 - 현재 번호 - 다음 번호들 로 구성 되어 있음. -->
           <th:block th:if="${noticeList.getNumber()>=tenPagesStat.count*10 -9 }"
                     th:each="leftNum : ${#numbers.sequence(tenPagesStat.count*10 -9,noticeList.getNumber())}">
             <a class="a_margin" th:href="@{/notice(pageNo=${leftNum - 1})}"><span th:text="${leftNum}"></span></a>
@@ -103,7 +105,9 @@
           </th:block>
         </div>
       </th:block>
+      <!--      마지막 페이지 번호의 10의 자리 ~ 마지막 페이지까지 -->
       <div th:if="${noticeList.getNumber()/10==noticeList.getTotalPages()/10}">
+        <!--          이전 번호들 - 현재 번호 - 다음 번호들 로 구성 되어 있음. -->
         <th:block th:if="${(noticeList.getTotalPages()/10)*10+1<=noticeList.getNumber()}"
                   th:each="lastLeftNum : ${#numbers.sequence((noticeList.getTotalPages()/10)*10+1,noticeList.getNumber())}">
           <a class="a_margin" th:href="@{/notice(pageNo=${lastLeftNum - 1})}"><span th:text="${lastLeftNum}"></span></a>

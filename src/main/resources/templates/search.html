@@ -64,6 +64,7 @@
          th:href="@{/search/{media}(media=${media},query=${param.query},page=${((searchList.page - 1)/10)*10})}">
         <span class="page-icon">arrow_back</span>이전
       </a>
+<!--      1 ~ 마지막 페이지 번호의 10의 자리까지-->
       <div th:if="${searchList.total_pages>=10}" th:each="number : ${#numbers.sequence(1,(searchList.total_pages/10))}">
         <div class="num-wrapper" th:if="${number == ((searchList.page - 1)/10)+1}">
           <div class="num" th:each="num : ${#numbers.sequence(1+((number - 1) * 10),number * 10)}">
@@ -74,6 +75,7 @@
           </div>
         </div>
       </div>
+<!--      마지막 페이지 번호의 10의 자리 ~ 마지막 페이지까지-->
       <div class="num-wrapper" th:if="${searchList.page/10 == searchList.total_pages/10 && searchList.page%10 > 0}">
         <div class="num" th:each="num : ${#numbers.sequence(1+((searchList.total_pages/10) * 10),searchList.total_pages)}">
           <a th:if="${searchList.page == num}" class="current"

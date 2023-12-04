@@ -5,10 +5,6 @@
     display: flex;
     justify-content: center;
 }
-.a_margin {
-    color: black;
-    padding: 0.5rem;
-}
 .notice_container {
     max-width: 70rem;
     margin: 0 2rem 1rem;
@@ -138,8 +134,8 @@
     display: flex;
     align-items: center;
     text-align: center;
-    height: 2.5rem;
     font-size: 0.9rem;
+    padding: 0.3rem 0;
     font-weight: 300;
     border-bottom: 0.01rem solid lightgray;
 }
@@ -148,6 +144,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.a_margin {
+    color: black;
+    padding: 0.5rem;
 }
 .present_page {
     border: 0.1rem solid lightgray;
