@@ -1,7 +1,6 @@
 package com.eunhop.tmdbmovieapp.dto.security;
 
 import com.eunhop.tmdbmovieapp.domain.User;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,11 +14,10 @@ import java.util.Collection;
 import java.util.Map;
 
 @Getter
-@Builder
 public class PrincipalUser implements UserDetails, OidcUser {
 
   // 유저
-  private User user;
+  private final User user;
 
   // OAuth2
   private Map<String, Object> attributes;

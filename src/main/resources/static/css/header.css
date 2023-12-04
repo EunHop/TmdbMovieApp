@@ -101,6 +101,8 @@ a {
 .desktop-header {
     font-size: 1.1rem;
     float: left;
+    color: white;
+    line-height: 5rem;
 }
 
 .mobile_slide {
@@ -150,6 +152,7 @@ a {
     }
     .desktop-header {
         font-size: 1.5rem;
+        float: none;
     }
     .mobile_menu {
         display: flex;

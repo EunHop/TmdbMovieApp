@@ -42,14 +42,20 @@
         </li>
         <li>
           <!-- 로그인 한 사람 모두 -->
-          <a sec:authorize="isAuthenticated()" th:href="@{/my_wishlist/movie}">
+          <a sec:authorize="hasRole('USER') || hasRole('USER_WITHOUT_WRITE')" th:href="@{/my_wishlist/movie}">
             <span class="google-icon" title="WishList">favorite</span>
             <span class="desktop-header">관심목록</span>
           </a>
         </li>
         <li>
           <!-- 로그인 한 사람 모두 -->
-          <a sec:authorize="isAuthenticated()" th:href="@{/}">
+          <a sec:authorize="hasRole('ADMIN')" th:href="@{/user/management(pageNo=0)}">
+            <span class="google-icon" title="manage_accounts">manage_accounts</span>
+            <span class="desktop-header">유저관리</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/notice(pageNo=0)}">
             <span class="google-icon" title="Notice">info</span>
             <span class="desktop-header">공지사항</span>
           </a>
@@ -76,11 +82,7 @@
         </li>
         <li>
           <!-- 로그인한 사람만 -->
-          <a sec:authorize="isAuthenticated()" th:href="@{/}">
-          <span class="google-icon" title="My info">
-          <span class="desktop-header">내정보</span>
-            account_circle</span>
-          </a>
+          <span sec:authorize="isAuthenticated()" class="desktop-header" th:text="${#authentication.principal.user.name+'님'}"></span>
         </li>
         <li>
           <!-- 로그인한 사람만 -->
@@ -98,16 +100,22 @@
       슬라이드
     </div>
     <ul>
-      <li>
+      <li sec:authorize="hasRole('USER') || hasRole('USER_WITHOUT_WRITE')">
         <!-- 로그인 한 사람 모두 -->
         <a th:href="@{/my_wishlist/movie}">
           <span class="google-icon" title="WishList">favorite</span>
           <span class="desktop-header">관심목록</span>
         </a>
       </li>
-      <li>
+      <li sec:authorize="hasRole('ADMIN')">
         <!-- 로그인 한 사람 모두 -->
-        <a th:href="@{/}">
+        <a th:href="@{/user/management(pageNo=0)}">
+          <span class="google-icon" title="manage_accounts">manage_accounts</span>
+          <span class="desktop-header">유저관리</span>
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/notice(pageNo=0)}">
           <span class="google-icon" title="Notice">info</span>
           <span class="desktop-header">공지사항</span>
         </a>
@@ -128,10 +136,7 @@
       </li>
       <li sec:authorize="isAuthenticated()">
         <!-- 로그인한 사람만 -->
-        <a th:href="@{/}">
-          <span class="google-icon" title="My info">account_circle</span>
-          <span class="desktop-header">내정보</span>
-        </a>
+        <span sec:authorize="isAuthenticated()" class="desktop-header" th:text="${#authentication.principal.user.name+'님'}"></span>
       </li>
       <li sec:authorize="isAuthenticated()">
         <!-- 로그인한 사람만 -->
@@ -157,7 +162,7 @@
         <span>thffoa99@gmail.com</span>
       </div>
       <div>
-        Copyright ⓒ 2023 <a href="https://github.com/EunHop/TmdbMovieApp" target="_blank">Github_EunHop</a> All rights
+        Copyright ⓒ <a href="https://github.com/EunHop/TmdbMovieApp" target="_blank">Github_EunHop</a> All rights
         reserved.
       </div>
     </div>
