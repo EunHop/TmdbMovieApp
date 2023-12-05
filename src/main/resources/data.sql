@@ -136,6 +136,6 @@ values ('Movie App의 사용법', '로그인 안한 상태로 영화나 TV프로
 insert into notice (`title`, `content`, `create_by`, `modified_by`, `enabled`, `user_id`, `created_at`, `modified_at`)
 values ('Movie App의 사용법', '로그인 안한 상태로 영화나 TV프로그램 검색 및 상세정보, 공지사항을 볼 수 있습니다.<br>로그인 한 상태로 상세정보 페이지에서 즐겨찾기 추가 및 제거, 한줄평 남기기가 가능합니다.<br>또 즐겨찾기 페이지에서 즐겨찾기를 볼 수 있고 아이콘을 클릭해 제거할 수 있습니다.', 'chooAdmin', 'chooAdmin', true, 11, now(), now());
 insert into notice (`title`, `content`, `create_by`, `modified_by`, `enabled`, `user_id`, `created_at`, `modified_at`)
-values ('Movie App의 사용법', '로그인 안한 상태로 영화나 TV프로그램 검색 및 상세정보, 공지사항을 볼 수 있습니다.<br>로그인 한 상태로 상세정보 페이지에서 즐겨찾기 추가 및 제거, 한줄평 남기기가 가능합니다.<br>또 즐겨찾기 페이지에서 즐겨찾기를 볼 수 있고 아이콘을 클릭해 제거할 수 있습니다.', 'chooAdmin', 'chooAdmin', true, 11, now(), now());
+values ('악성 유저의 대한 대응', '안녕하세요.<br>악성 한줄평을 남기는 유저는 적발시 한줄평 쓰기 권한을 빼고 해당 유저의 모든 한줄평이 제거됩니다.', 'chooAdmin', 'chooAdmin', true, 11, now(), now());
 insert into notice (`title`, `content`, `create_by`, `modified_by`, `enabled`, `user_id`, `created_at`, `modified_at`)
-values ('Movie App의 사용법', '로그인 안한 상태로 영화나 TV프로그램 검색 및 상세정보, 공지사항을 볼 수 있습니다.<br>로그인 한 상태로 상세정보 페이지에서 즐겨찾기 추가 및 제거, 한줄평 남기기가 가능합니다.<br>또 즐겨찾기 페이지에서 즐겨찾기를 볼 수 있고 아이콘을 클릭해 제거할 수 있습니다.', 'chooAdmin', 'chooAdmin', true, 11, now(), now());
+values ('저희 사이트를 찾아주셔서 감사합니다.', '안녕하세요.<br>저희 사이트를 찾아주셔서 감사합니다.<br>해당 프로젝트의 모든 코드들은 우측 하단에 github를 클릭하시면 확인 하실 수 있습니다.', 'chooAdmin', 'chooAdmin', true, 11, now(), now());

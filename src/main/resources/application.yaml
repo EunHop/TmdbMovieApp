@@ -4,13 +4,13 @@ spring:
     init:
       mode: always  #data.sql ????? ????
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tmdbmovieapp
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3307/tmdbmovieapp
     username: ${MYSQL_ID}
     password: ${MYSQL_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create  #???? ??? ??? drop?? ?? create?
+      ddl-auto: update  #???? ??? ??? drop?? ?? create?
     defer-datasource-initialization: true #data.sql ????? ????
     properties:
       hibernate:
