@@ -24,11 +24,11 @@ values ('admin@test.com', '{noop}1234', 'chooAdmin', 'ADMIN', true, now(), now()
 insert into video (`id`, `score`, `release_date`, `title`, `poster_path`, `media_type`, `tagline`, `created_at`, `modified_at`)
 values (575264, 77, '2023-07-08', '미션 임파서블: 데드 레코닝 PART ONE', '/nQsWPG020kSWdOl3EhFXRNE2s0n.jpg', 'movie', '가장 위험한 작전, 그의 마지막 선택', now(), now());
 insert into video (`id`, `score`, `release_date`, `title`, `poster_path`, `media_type`, `tagline`, `created_at`, `modified_at`)
-values (239770, 77, '', '닥터 후', '', 'tv', '', now(), now());
+values (239770, 77, '', '닥터 후', '/zHu1etq7NIZiTV8jzEVNLBerqLA.jpg', 'tv', '', now(), now());
 insert into video (`id`, `score`, `release_date`, `title`, `poster_path`, `media_type`, `tagline`, `created_at`, `modified_at`)
-values (96648, 84, '', '스위트홈', '', 'tv', '', now(), now());
+values (96648, 84, '2020-12-18', '스위트홈', '/eNfNu9sJ2eVmMcbrKpgEovPoyB8.jpg', 'tv', '죽어버리거나, 괴물로 살아남거나', now(), now());
 insert into video (`id`, `score`, `release_date`, `title`, `poster_path`, `media_type`, `tagline`, `created_at`, `modified_at`)
-values (872585, 82, '', '오펜하이머', '', 'movie', '', now(), now());
+values (872585, 82, '2023-07-19', '오펜하이머', '/kAYtsVpE7q6NhLz6vKYAxOM6LmN.jpg', 'movie', '나는 이제 죽음이요, 세상의 파괴자가 되었다.', now(), now());
 
 insert into user_and_video (`wish`, `video_id`, `user_id`, `review`, `created_at`, `modified_at`)
 values (true, 575264, 1, '한줄평1 엄청 긴 한줄평 남기기 엄청 긴 한줄평 남기기 엄청 긴 한줄평 남기기 엄청 긴 한줄평 남기기 엄청 긴 한줄평 남기기 엄청 긴 한줄평 남기기', now(), now());

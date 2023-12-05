@@ -139,7 +139,7 @@
   <div class="review_container">
     <div class="review_wrapper">
       <p class="review_title">한줄평</p>
-      <div th:if="${myReview==null || myReview.review==null}" class="create_review_wrapper" sec:authorize="isAuthenticated()">
+      <div th:if="${myReview==null || myReview.review==null}" class="create_review_wrapper" sec:authorize="hasRole('USER') || hasRole('ADMIN')">
         <form id="review_form" class="create_review" onsubmit="return false">
           <label>
             <input type="text" class="create_input" name="review" id="review_form_text"
@@ -162,7 +162,7 @@
           </div>
         </form>
       </div>
-      <div th:if="${myReview!=null && myReview.review!=null}" class="my_review_wrapper" sec:authorize="isAuthenticated()">
+      <div th:if="${myReview!=null && myReview.review!=null}" class="my_review_wrapper" sec:authorize="hasRole('USER') || hasRole('ADMIN')">
         <div class="my_review_span">
           <span>내 작성글</span>
           <div class="update_left">
@@ -196,7 +196,7 @@
           </div>
         </div>
       </div>
-      <div th:if="${reviews.size()==0 && myReview?.review==null}" sec:authorize="isAuthenticated()" class="reviews_null_wrapper">
+      <div th:if="${reviews.size()==0 && myReview?.review==null}" sec:authorize="hasRole('USER') || hasRole('ADMIN')" class="reviews_null_wrapper">
         <div class="reviews_null">
           <p>현재 한줄 평이 없습니다. 한줄 평을 남겨보세요.</p>
         </div>

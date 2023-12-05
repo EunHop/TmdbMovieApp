@@ -65,15 +65,13 @@ public class SecurityConfig {
         .apply(new MyCustomDsl());
     // authorization
     http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-            .requestMatchers("/", "/signup", "/login").permitAll()
             .requestMatchers("/my_wishlist").authenticated()
-            .requestMatchers(HttpMethod.GET, "/notice").permitAll()
             .requestMatchers(HttpMethod.POST, "/notice").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.GET, "/user/management").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.POST, "/user/management").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.GET, "/user/management/review").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.POST, "/user/management/review").hasRole(Roles.ADMIN.name())
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()
         )
         // login
         .formLogin(login -> login

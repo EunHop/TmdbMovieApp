@@ -1,8 +1,5 @@
 # Database ??
 spring:
-  sql:
-    init:
-      mode: always  #data.sql ????? ????
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://${DB_URL}:${DB_PORT}/${DB_NAME}
@@ -10,8 +7,7 @@ spring:
     password: ${MYSQL_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update  #???? ??? ??? drop?? ?? create?
-    defer-datasource-initialization: true #data.sql ????? ????
+      ddl-auto: none  #???? ??? ??? drop?? ?? create?
     properties:
       hibernate:
         format_sql: true  #?? sql? ? ???
@@ -49,13 +45,6 @@ spring:
   codec:
     max-in-memory-size: 10MB
 
-# Spring Actuator ??
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-debug: true
 tmdb:
   api:
     key: ${TMDB_API_KEY}
