@@ -73,7 +73,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/user/management").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.GET, "/user/management/review").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.POST, "/user/management/review").hasRole(Roles.ADMIN.name())
-            .anyRequest().permitAll() // 나중에 .authticated() 로 바꾸기
+            .anyRequest().authenticated()
         )
         // login
         .formLogin(login -> login
