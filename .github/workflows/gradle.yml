@@ -35,6 +35,9 @@ jobs:
         with:
           arguments: build
         env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
           MYSQL_ID: ${{ secrets.MYSQL_ID }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
