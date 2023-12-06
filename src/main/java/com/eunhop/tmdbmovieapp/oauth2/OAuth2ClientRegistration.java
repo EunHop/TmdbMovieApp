@@ -24,18 +24,6 @@ public class OAuth2ClientRegistration {
         .clientSecret(clientSecret)
         .build();
   }
-
-  public ClientRegistration naverClientRegistration() {
-    final String clientId = environment.getProperty(registration + "naver.client-id");
-    final String clientSecret = environment.getProperty(registration + "naver.client-secret");
-
-    return CustomOAuth2Provider
-        .NAVER
-        .getBuilder("naver")
-        .clientId(clientId)
-        .clientSecret(clientSecret)
-        .build();
-  }
   public ClientRegistration kakaoClientRegistration() {
     final String clientId = environment.getProperty(registration + "kakao.client-id");
     final String clientSecret = environment.getProperty(registration + "kakao.client-secret");

@@ -26,26 +26,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     final OAuth2User oAuth2User = userService.loadUser(userRequest);
     String provider = userRequest.getClientRegistration().getRegistrationId();
 
-    if (provider.equals("naver")) {
-      Map<String, Object> attributesResponse = (Map<String, Object>) oAuth2User.getAttributes().get("response");
-      String resEmail = attributesResponse.get("email").toString();
-      String resName = attributesResponse.get("name").toString();
+    Map<String, Object> attributesResponse = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
+    Map<String, Object> profileResponse = (Map<String, Object>) attributesResponse.get("profile");
+    String resNickname = profileResponse.get("nickname").toString();
+    String resEmail = attributesResponse.get("email").toString();
 
-      return new PrincipalUser(
-          oAuth2Service.userAndOAuth2DBSave(resEmail, resName, provider),
-          attributesResponse
-      );
-    } else {
-      Map<String, Object> attributesResponse = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
-      Map<String, Object> profileResponse = (Map<String, Object>) attributesResponse.get("profile");
-      String resNickname = profileResponse.get("nickname").toString();
-      String resEmail = attributesResponse.get("email").toString();
-
-      return new PrincipalUser(
-          oAuth2Service.userAndOAuth2DBSave(resEmail, resNickname, provider),
-          attributesResponse
-      );
-    }
+    return new PrincipalUser(
+        oAuth2Service.userAndOAuth2DBSave(resEmail, resNickname, provider),
+        attributesResponse
+    );
   }
 
 }

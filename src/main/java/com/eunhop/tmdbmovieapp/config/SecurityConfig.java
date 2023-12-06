@@ -112,7 +112,6 @@ public class SecurityConfig {
   public ClientRegistrationRepository clientRegistrationRepository() {
     List<ClientRegistration> clientRegistrations = Arrays.asList(
         oAuth2ClientRegistration.googleClientRegistration(),
-        oAuth2ClientRegistration.naverClientRegistration(),
         oAuth2ClientRegistration.kakaoClientRegistration()
     );
     return new InMemoryClientRegistrationRepository(clientRegistrations);

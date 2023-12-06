@@ -21,19 +21,6 @@ public enum CustomOAuth2Provider {
       return builder;
     }
   },
-  NAVER {
-    public ClientRegistration.Builder getBuilder(String registrationId) {
-      ClientRegistration.Builder builder = getBuilder(registrationId,
-          ClientAuthenticationMethod.CLIENT_SECRET_BASIC, DEFAULT_REDIRECT_URL);
-      builder.scope("name", "email");
-      builder.authorizationUri("https://nid.naver.com/oauth2.0/authorize");
-      builder.tokenUri("https://nid.naver.com/oauth2.0/token");
-      builder.userInfoUri("https://openapi.naver.com/v1/nid/me");
-      builder.userNameAttributeName("response");
-      builder.clientName("Naver");
-      return builder;
-    }
-  },
   KAKAO {
     public ClientRegistration.Builder getBuilder(String registrationId) {
       ClientRegistration.Builder builder = getBuilder(registrationId,
