@@ -71,7 +71,8 @@ public class JwtService {
     if(jwtToken.isPresent()) {
       jwtToken.get().setAccessToken(newAccessToken);
       jwtTokenRepository.save(jwtToken.get());
+    } else {
+      throw new RuntimeException("업데이트 오류");
     }
-    throw new RuntimeException("업데이트 오류");
   }
 }
