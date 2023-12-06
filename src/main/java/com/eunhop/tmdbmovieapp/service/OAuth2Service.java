@@ -33,9 +33,11 @@ public class OAuth2Service {
         .name(resName)
         .email(resEmail)
         .provider(provider).build();
-    if (existOauth2.isPresent()) {
+    if (existOauth2.isPresent() && user.isPresent()) {
       existOauth2.get().setName(resName);
       oAuth2Repository.save(existOauth2.get());
+      user.get().setName(resName);
+      userRepository.save(user.get());
       return existOauth2.get().getUser();
     } else if (user.isPresent()) {
       oauth2.setUser(user.get());
