@@ -14,4 +14,5 @@ public interface UserAndVideoRepository extends JpaRepository<UserAndVideo, Long
   List<UserAndVideo> findByUserId(Long userId);
   List<UserAndVideo> findByVideoIdAndUserIdNotIn(int video_id, List<Long> user_id);
   List<UserAndVideo> findByUserIdAndWishOrderByCreatedAt(Long userId, boolean wish);
+  Page<UserAndVideo> findByReviewIsNotNull(Pageable pageable);
 }

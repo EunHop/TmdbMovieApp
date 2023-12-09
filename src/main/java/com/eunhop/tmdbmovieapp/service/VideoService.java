@@ -193,7 +193,7 @@ public class VideoService {
 
   public Page<UserAndVideo> findAnyReviews(int pageNo, String sort) {
     Pageable pageable = PageRequest.of(pageNo, 8, Sort.by(Sort.Direction.DESC, sort));
-    return userAndVideoRepository.findAll(pageable);
+    return userAndVideoRepository.findByReviewIsNotNull(pageable);
   }
 
   public void reviewDelete(long id) {
