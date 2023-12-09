@@ -1,6 +1,8 @@
 ﻿TMDB API를 활용한 영화, TV프로그램 검색 사이트
 ---
 
+![image](https://github.com/EunHop/TmdbMovieApp/assets/91999279/62638ab2-ab47-4a78-bfb9-d30f954d19a5)
+
 배포 사이트 링크 = <https://port-0-tmdbmovieapp-1gksli2alps05xks.sel4.cloudtype.app>
 
 • 프로젝트 내용 :
@@ -86,7 +88,7 @@ WebClient를 쓰기 위해서 Spring WebFlux를 추가해 줬습니다.
 
 페이지 순서도
 
-
+![image](https://github.com/EunHop/TmdbMovieApp/assets/91999279/09b0453a-9c17-4826-9165-f4e0c0efc04a)
 
 ---
 
