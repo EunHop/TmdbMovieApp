@@ -3,6 +3,8 @@
 
 ![image](https://github.com/EunHop/TmdbMovieApp/assets/91999279/62638ab2-ab47-4a78-bfb9-d30f954d19a5)
 
+![image](https://github.com/EunHop/TmdbMovieApp/assets/91999279/d7492740-226a-4764-91a1-ced3fe013483)
+
 배포 사이트 링크 = <https://port-0-tmdbmovieapp-1gksli2alps05xks.sel4.cloudtype.app>
 
 • 프로젝트 내용 :
