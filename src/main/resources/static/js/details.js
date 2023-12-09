@@ -10,14 +10,18 @@ function wish() {
 }
 
 $('#review_btn').click(function () {
-    $.ajax({
-        url: '/details',
-        method: "POST",
-        data: $('#review_form').serialize(),
-        success: function () {
-            location.replace(location.href);
-        }
-    })
+    if($('#review_form_text').val().replace(/\s|/gi, "").length === 0) {
+        alert("내용을 입력해주세요.");
+    } else {
+        $.ajax({
+            url: '/details',
+            method: "POST",
+            data: $('#review_form').serialize(),
+            success: function () {
+                location.replace(location.href);
+            }
+        })
+    }
 })
 
 $('#update_btn').click(function () {
