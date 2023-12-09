@@ -203,11 +203,11 @@ public class VideoService {
 
   public Page<UserAndVideo> findUserReviews(long id, int pageNo, String sort) {
     Pageable pageable = PageRequest.of(pageNo, 8, Sort.by(Sort.Direction.DESC, sort));
-    return userAndVideoRepository.findByUserId(id, pageable);
+    return userAndVideoRepository.findByUserIdAndReviewIsNotNull(id, pageable);
   }
 
   public void userReviewsDeleteAll(long userId) {
-    List<UserAndVideo> userReviews = userAndVideoRepository.findByUserId(userId);
+    List<UserAndVideo> userReviews = userAndVideoRepository.findByUserIdAndReviewIsNotNull(userId);
     userAndVideoRepository.deleteAll(userReviews);
   }
 }
