@@ -152,6 +152,16 @@ public class VideoService {
     }
   }
 
+  public void deleteReview(User user, ReviewDto reviewDto) {
+    UserAndVideo existEntity = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), reviewDto.getId());
+    if (existEntity.isWish()) {
+      existEntity.setReview(null);
+      userAndVideoRepository.save(existEntity);
+    } else {
+      userAndVideoRepository.delete(existEntity);
+    }
+  }
+
   public void wishSetting(User user, ReviewDto reviewDto) {
     UserAndVideo existEntity = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), reviewDto.getId());
     if (existEntity != null) {
@@ -186,18 +196,32 @@ public class VideoService {
   }
 
   public List<UserAndVideo> findMyWishlist(User user) {
-    return userAndVideoRepository.findByUserIdAndWishOrderByCreatedAt(user.getId(), true);
+    return userAndVideoRepository.findByUserIdOrderByCreatedAt(user.getId());
   }
 
   public List<UserAndVideo> findMyWishlistOrderByDate(User user) {
-    List<UserAndVideo> userAndVideos =  userAndVideoRepository.findByUserIdAndWishOrderByCreatedAt(user.getId(), true);
+    List<UserAndVideo> userAndVideos =  userAndVideoRepository.findByUserIdOrderByCreatedAt(user.getId());
     return userAndVideos.stream().sorted(Comparator.comparing(userAndVideo -> userAndVideo.getVideo().getRelease_date())).toList();
   }
 
-  public void removeWish(User user, int id) {
+  public void wishlistWishSetting(User user, int id) {
     UserAndVideo existEntity = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), id);
-    existEntity.setWish(false);
-    userAndVideoRepository.save(existEntity);
+      if(existEntity.getReview() == null || existEntity.getReview().isEmpty()) {
+        if (existEntity.isWish()) {
+          userAndVideoRepository.delete(existEntity);
+        } else {
+          existEntity.setWish(true);
+          userAndVideoRepository.save(existEntity);
+        }
+      } else {
+        if (existEntity.isWish()) {
+          existEntity.setWish(false);
+          userAndVideoRepository.save(existEntity);
+        } else {
+          existEntity.setWish(true);
+          userAndVideoRepository.save(existEntity);
+        }
+      }
   }
 
   public Page<UserAndVideo> findAnyReviews(int pageNo, String sort) {

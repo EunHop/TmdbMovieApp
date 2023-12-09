@@ -94,6 +94,15 @@ public class VideoController {
     return "success";
   }
 
+  @PostMapping("/details/delete")
+  @ResponseBody
+  public String deleteReview(@AuthenticationPrincipal PrincipalUser principalUser,
+                              ReviewDto reviewDto
+  ) {
+      videoService.deleteReview(principalUser.getUser(), reviewDto);
+    return "success";
+  }
+
   @GetMapping("/my_wishlist/{media}")
   public String myWishlist(@AuthenticationPrincipal PrincipalUser principalUser,
                            Model model, @PathVariable String media) {
@@ -107,7 +116,7 @@ public class VideoController {
   public String myWishRemove(@AuthenticationPrincipal PrincipalUser principalUser,
                              @RequestParam int id
   ) {
-    videoService.removeWish(principalUser.getUser(), id);
+    videoService.wishlistWishSetting(principalUser.getUser(), id);
     return "success";
   }
 }

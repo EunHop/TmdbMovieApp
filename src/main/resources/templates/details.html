@@ -167,6 +167,8 @@
           <span>내 작성글</span>
           <div class="update_left">
             <button class="review_btn" id="update_review_btn" type="button">수정</button>
+            <button class="review_btn" id="update_btn" type="button" style="display: none">확인</button>
+            <button class="review_btn" id="delete_btn" type="button">삭제</button>
           </div>
         </div>
         <div class="my_review">
@@ -181,9 +183,6 @@
                 <p th:text="${myReview.modifiedAt.getHour()}+'시'+${myReview.modifiedAt.getMinute()}+'분'"></p>
               </div>
             </label>
-            <div class="move_update_btn">
-              <button class="review_btn" id="update_btn" type="button" style="display: none">확인</button>
-            </div>
           </form>
         </div>
       </div>

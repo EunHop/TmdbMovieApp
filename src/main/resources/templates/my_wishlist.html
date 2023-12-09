@@ -55,8 +55,12 @@
               <form th:id="'wish_form'+${wishStat.index}" onsubmit="return false">
                 <input type="hidden" name="id" th:value="${wish.video.id}">
                 <button th:id="${wishStat.index}" class="wish_submit" type="button" onclick="wish_submit(this.id)">
-                  <div class="wish_btn_wrapper">
+                  <div th:if="${wish.isWish()}" class="wish_btn_wrapper">
                     <span class="wish_icon">favorite</span>
+                    <span>관심</span>
+                  </div>
+                  <div th:unless="${wish.isWish()}" class="wish_btn_wrapper">
+                    <span class="wish_icon_none">favorite</span>
                     <span>관심</span>
                   </div>
                 </button>
@@ -85,11 +89,15 @@
                 <span class="wish_score" th:text="${wish.video.score}+'%'"></span>
               </div>
               <p class="wish_tagline" th:text="${wish.video.tagline}"></p>
-              <form method="post" th:action="@{/my_wishlist/{media}/wish(media=${media})}">
+              <form th:id="'wish_form'+${wishStat.index}" onsubmit="return false">
                 <input type="hidden" name="id" th:value="${wish.video.id}">
-                <button class="wish_submit" type="submit">
-                  <div class="wish_btn_wrapper">
+                <button th:id="${wishStat.index}" class="wish_submit" type="button" onclick="wish_submit(this.id)">
+                  <div th:if="${wish.isWish()}" class="wish_btn_wrapper">
                     <span class="wish_icon">favorite</span>
+                    <span>관심</span>
+                  </div>
+                  <div th:unless="${wish.isWish()}" class="wish_btn_wrapper">
+                    <span class="wish_icon_none">favorite</span>
                     <span>관심</span>
                   </div>
                 </button>
