@@ -119,13 +119,13 @@ public class VideoService {
   }
 
   public List<UserAndVideo> findAllReview(int id) {
-    return userAndVideoRepository.findByVideoId(id);
+    return userAndVideoRepository.findByVideoIdAndReviewIsNotNull(id);
   }
 
   public List<UserAndVideo> findAllReviewExceptMine(int id, Long userId) {
     List<Long> userList = new ArrayList<>();
     userList.add(userId);
-    return userAndVideoRepository.findByVideoIdAndUserIdNotIn(id, userList);
+    return userAndVideoRepository.findByVideoIdAndUserIdNotInAndReviewIsNotNull(id, userList);
   }
 
   public UserAndVideo findMyReview(int id, Long userId) {
@@ -155,12 +155,21 @@ public class VideoService {
   public void wishSetting(User user, ReviewDto reviewDto) {
     UserAndVideo existEntity = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), reviewDto.getId());
     if (existEntity != null) {
-      if (existEntity.isWish()) {
-        existEntity.setWish(false);
-        userAndVideoRepository.save(existEntity);
+      if(existEntity.getReview() == null || existEntity.getReview().isEmpty()) {
+        if (existEntity.isWish()) {
+          userAndVideoRepository.delete(existEntity);
+        } else {
+          existEntity.setWish(true);
+          userAndVideoRepository.save(existEntity);
+        }
       } else {
-        existEntity.setWish(true);
-        userAndVideoRepository.save(existEntity);
+        if (existEntity.isWish()) {
+          existEntity.setWish(false);
+          userAndVideoRepository.save(existEntity);
+        } else {
+          existEntity.setWish(true);
+          userAndVideoRepository.save(existEntity);
+        }
       }
     } else {
       Video video = Video.builder()
