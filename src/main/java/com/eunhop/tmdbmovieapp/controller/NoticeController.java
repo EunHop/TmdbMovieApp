@@ -24,6 +24,23 @@ public class NoticeController {
         return "notice";
     }
 
+    @GetMapping("/notice/search")
+    public String noticeSearch(
+        Model model, @RequestParam int pageNo,
+        @RequestParam(defaultValue = "id") String sort, @RequestParam String query, @RequestParam boolean enabled
+    ) {
+        model.addAttribute("noticeList", noticeService.findQueryEnabledAll(pageNo, sort, query, enabled));
+        model.addAttribute("enabled", enabled);
+        return "notice";
+    }
+
+    @GetMapping("/notice/disabled")
+    public String noticeDisabled(Model model, @RequestParam int pageNo, @RequestParam(defaultValue = "id") String sort) {
+        model.addAttribute("noticeList", noticeService.findDisabledAll(pageNo, sort));
+        model.addAttribute("enabled", false);
+        return "notice";
+    }
+
     @PostMapping("/notice/modify")
     @ResponseBody
     public String noticeContentModify(@AuthenticationPrincipal PrincipalUser principalUser, @RequestParam String content, @RequestParam long id) {
@@ -36,13 +53,6 @@ public class NoticeController {
     public String noticeDelete(@AuthenticationPrincipal PrincipalUser principalUser, @RequestParam long id) {
         noticeService.noticeDelete(principalUser, id);
         return "success";
-    }
-
-    @GetMapping("/notice/disabled")
-    public String noticeDisabled(Model model, @RequestParam int pageNo, @RequestParam(defaultValue = "id") String sort) {
-        model.addAttribute("noticeList", noticeService.findDisabledAll(pageNo, sort));
-        model.addAttribute("enabled", false);
-        return "notice";
     }
 
     @PostMapping("/notice/restore")
@@ -60,15 +70,11 @@ public class NoticeController {
 
     @PostMapping("/notice/add/confirm")
     @ResponseBody
-    public String noticeAddConfirm(@AuthenticationPrincipal PrincipalUser principalUser, @RequestParam String title, @RequestParam String content) {
+    public String noticeAddConfirm(
+        @AuthenticationPrincipal PrincipalUser principalUser, @RequestParam String title, @RequestParam String content
+    ) {
         noticeService.noticeCreate(principalUser, title, content);
         return "success";
     }
 
-    @GetMapping("/notice/search")
-    public String noticeSearch(Model model, @RequestParam int pageNo, @RequestParam(defaultValue = "id") String sort, @RequestParam String query) {
-        model.addAttribute("noticeList", noticeService.findQueryEnabledAll(pageNo, sort, query));
-        model.addAttribute("enabled", true);
-        return "notice";
-    }
 }

@@ -22,9 +22,9 @@ public class NoticeService {
     return noticeRepository.findByEnabled(pageable, true);
   }
 
-  public Page<Notice> findQueryEnabledAll(int pageNo, String sort, String query) {
+  public Page<Notice> findQueryEnabledAll(int pageNo, String sort, String query, boolean enabled) {
     Pageable pageable = PageRequest.of(pageNo, 8, Sort.by(Sort.Direction.DESC, sort));
-    return noticeRepository.findByEnabledAndTitleContainingIgnoreCase(pageable, true, query);
+    return noticeRepository.findByEnabledAndTitleContainingIgnoreCase(pageable, enabled, query);
   }
 
   public void modifyContent(PrincipalUser principalUser, String content, long id) {

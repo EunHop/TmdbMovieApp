@@ -66,6 +66,7 @@ public class SecurityConfig {
     // authorization
     http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
             .requestMatchers("/my_wishlist").authenticated()
+            .requestMatchers(HttpMethod.GET, "/notice/disabled").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.POST, "/notice").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.GET, "/user/management").hasRole(Roles.ADMIN.name())
             .requestMatchers(HttpMethod.POST, "/user/management").hasRole(Roles.ADMIN.name())

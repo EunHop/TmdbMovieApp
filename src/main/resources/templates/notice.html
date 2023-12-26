@@ -25,6 +25,7 @@
         <form method="get" th:action="@{/notice/search}">
           <label>
             <input type="hidden" name="pageNo" value="0">
+            <input type="hidden" name="enabled" th:value="${enabled}">
             <input type="text" name="query" placeholder="공지사항을 검색해보세요." th:value="${param.query}">
             <button type="submit">Search</button>
           </label>
