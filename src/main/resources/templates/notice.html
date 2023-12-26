@@ -19,7 +19,18 @@
         <a class="notice_disabled active" th:href="@{/notice/disabled(pageNo=0)}">Disabled</a>
       </th:block>
     </div>
-    <h1 class="h1">공지사항</h1>
+    <div class="notice_title_wrapper">
+      <h1 class="h1">공지사항</h1>
+      <div class="search">
+        <form method="get" th:action="@{/notice/search}">
+          <label>
+            <input type="hidden" name="pageNo" value="0">
+            <input type="text" name="query" placeholder="공지사항을 검색해보세요." th:value="${param.query}">
+            <button type="submit">Search</button>
+          </label>
+        </form>
+      </div>
+    </div>
     <th:block th:each="notice : ${noticeList}">
       <ul class="entity_ul">
         <li class="notice_number">

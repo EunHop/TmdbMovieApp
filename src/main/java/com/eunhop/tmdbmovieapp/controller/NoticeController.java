@@ -64,4 +64,11 @@ public class NoticeController {
         noticeService.noticeCreate(principalUser, title, content);
         return "success";
     }
+
+    @GetMapping("/notice/search")
+    public String noticeSearch(Model model, @RequestParam int pageNo, @RequestParam(defaultValue = "id") String sort, @RequestParam String query) {
+        model.addAttribute("noticeList", noticeService.findQueryEnabledAll(pageNo, sort, query));
+        model.addAttribute("enabled", true);
+        return "notice";
+    }
 }

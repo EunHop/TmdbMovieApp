@@ -102,6 +102,11 @@
     font-size: 1.2rem;
     font-weight: 300;
 }
+.my_review {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    width: 90%;
+}
 .wish_submit {
     background-color: transparent;
     border: 0;

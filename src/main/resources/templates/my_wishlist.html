@@ -50,21 +50,22 @@
                   <img class="wish_tmdb_logo" src="/images/tmdb_logo.png" alt="tmdb_logo">
                   <span class="wish_score" th:text="${wish.video.score}+'%'"></span>
                 </div>
+                <form th:id="'wish_form'+${wishStat.index}" onsubmit="return false">
+                  <input type="hidden" name="id" th:value="${wish.video.id}">
+                  <button th:id="${wishStat.index}" class="wish_submit" type="button" onclick="wish_submit(this.id)">
+                    <div th:if="${wish.isWish()}" class="wish_btn_wrapper">
+                      <span class="wish_icon">favorite</span>
+                      <span>관심</span>
+                    </div>
+                    <div th:unless="${wish.isWish()}" class="wish_btn_wrapper">
+                      <span class="wish_icon_none">favorite</span>
+                      <span>관심</span>
+                    </div>
+                  </button>
+                </form>
               </div>
               <p class="wish_tagline" th:text="${wish.video.tagline}"></p>
-              <form th:id="'wish_form'+${wishStat.index}" onsubmit="return false">
-                <input type="hidden" name="id" th:value="${wish.video.id}">
-                <button th:id="${wishStat.index}" class="wish_submit" type="button" onclick="wish_submit(this.id)">
-                  <div th:if="${wish.isWish()}" class="wish_btn_wrapper">
-                    <span class="wish_icon">favorite</span>
-                    <span>관심</span>
-                  </div>
-                  <div th:unless="${wish.isWish()}" class="wish_btn_wrapper">
-                    <span class="wish_icon_none">favorite</span>
-                    <span>관심</span>
-                  </div>
-                </button>
-              </form>
+              <p th:if="${wish.review != null}" class="my_review" th:text="'내 한줄평 : '+${wish.review}"></p>
             </div>
           </div>
         </div>
@@ -85,23 +86,26 @@
               </a>
               <div class="wish_score_wrapper">
                 <span th:text="${wish.video.release_date}"></span>
+                <div class="my_score_wrapper">
                 <img class="wish_tmdb_logo" src="/images/tmdb_logo.png" alt="tmdb_logo">
                 <span class="wish_score" th:text="${wish.video.score}+'%'"></span>
+                </div>
+                <form th:id="'wish_form'+${wishStat.index}" onsubmit="return false">
+                  <input type="hidden" name="id" th:value="${wish.video.id}">
+                  <button th:id="${wishStat.index}" class="wish_submit" type="button" onclick="wish_submit(this.id)">
+                    <div th:if="${wish.isWish()}" class="wish_btn_wrapper">
+                      <span class="wish_icon">favorite</span>
+                      <span>관심</span>
+                    </div>
+                    <div th:unless="${wish.isWish()}" class="wish_btn_wrapper">
+                      <span class="wish_icon_none">favorite</span>
+                      <span>관심</span>
+                    </div>
+                  </button>
+                </form>
               </div>
               <p class="wish_tagline" th:text="${wish.video.tagline}"></p>
-              <form th:id="'wish_form'+${wishStat.index}" onsubmit="return false">
-                <input type="hidden" name="id" th:value="${wish.video.id}">
-                <button th:id="${wishStat.index}" class="wish_submit" type="button" onclick="wish_submit(this.id)">
-                  <div th:if="${wish.isWish()}" class="wish_btn_wrapper">
-                    <span class="wish_icon">favorite</span>
-                    <span>관심</span>
-                  </div>
-                  <div th:unless="${wish.isWish()}" class="wish_btn_wrapper">
-                    <span class="wish_icon_none">favorite</span>
-                    <span>관심</span>
-                  </div>
-                </button>
-              </form>
+              <p th:if="${wish.review != null}" class="my_review" th:text="'내 한줄평 : '+${wish.review}"></p>
             </div>
           </div>
         </div>

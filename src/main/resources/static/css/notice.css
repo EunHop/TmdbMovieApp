@@ -26,11 +26,31 @@
     border-radius: 0.5rem;
     background-color: lightgrey;
 }
+.notice_title_wrapper {
+    overflow: hidden;
+    border-bottom: 0.01rem solid lightgray;
+    clear: both;
+}
 .h1 {
     font-size: 1.5rem;
     font-weight: 700;
-    padding: 1rem 0;
-    border-bottom: 0.01rem solid lightgray;
+}
+.search {
+    float: right;
+    padding-bottom: 1rem;
+}
+.search input {
+    height: 2rem;
+    border-radius: 0.5rem;
+    padding: 0 1rem;
+}
+.search button {
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: 0;
+    padding: 0.5rem;
+    cursor: pointer;
+    background-color: skyblue;
 }
 .notice_menu {
     margin-top: 1rem;

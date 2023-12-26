@@ -22,6 +22,11 @@ public class NoticeService {
     return noticeRepository.findByEnabled(pageable, true);
   }
 
+  public Page<Notice> findQueryEnabledAll(int pageNo, String sort, String query) {
+    Pageable pageable = PageRequest.of(pageNo, 8, Sort.by(Sort.Direction.DESC, sort));
+    return noticeRepository.findByEnabledAndTitleContainingIgnoreCase(pageable, true, query);
+  }
+
   public void modifyContent(PrincipalUser principalUser, String content, long id) {
     String replaceContents = content.replace("\r\n", "<br>");
     Notice find = noticeRepository.findById(id).get();

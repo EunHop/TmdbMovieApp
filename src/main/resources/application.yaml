@@ -45,3 +45,4 @@ spring:
 tmdb:
   api:
     key: ${TMDB_API_KEY}
+debug: true
